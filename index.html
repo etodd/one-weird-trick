@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>One Weird Trick to Write Better Code</title>
+
+		<meta name="description" content="Developers hate him!">
+		<meta name="author" content="Evan Todd">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
+		<link rel="stylesheet" href="style.css" id="theme">
+	</head>
+
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section data-background="#900">
+					<h1>One Weird Trick to Write Better Code</h1>
+					<small>
+						Evan Todd<br />
+						(developers hate him!)<br />
+						&#8592;&#8594;
+					</small>
+				</section>
+				<section data-background="#900">
+					<h1>This trick is not mine</h1>
+					<p>For more information, follow actual smart people</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>What we've all been taught</h1>
+					<pre><code data-trim class="csharp">
+class Person
+{
+	public virtual bool IsAlwaysRight() { return false; }
+}
+
+class Employee : public Person
+{
+	public void Fire();
+}
+
+class Customer : public Person
+{
+	public override bool IsAlwaysRight() { return true; }
+}
+					</code></pre>
+				</section>
+				<section data-background="#900">
+					<h1>Classic game code</h1>
+					<p>
+						Doom 3 source - <a href="https://github.com/id-Software/DOOM-3-BFG">https://github.com/id-Software/DOOM-3-BFG</a>
+					</p>
+<ul>
+	<li>idClass
+	<ul>
+		<li>idEntity
+		<ul>
+			<li>idAnimatedEntity
+			<ul>
+				<li>idWeapon</li>
+				<li>idAFEntity_Base
+				<ul>
+					<li>idAFEntity_ClawFourFingers</li>
+					<li>idAFEntity_Vehicle
+					<ul>
+						<li>idAFEntity_VehicleFourWheels</li>
+						<li>idAFEntity_VehicleSixWheels</li>
+					</ul>
+					</li>
+					<li>idAFEntity_Gibbable
+					<ul>
+						<li>idAFEntity_WithAttachedHead</li>
+						<li>idActor
+						<ul>
+							<li>idPlayer</li>
+							<li>idAI</li>
+						</ul>
+					</ul>
+					</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+				</section>
+				<section data-background="#900">
+					<h1>Problem</h1>
+					<p>"The player is now a car"</p>
+<ul class="fragment">
+	<li>idClass
+	<ul>
+		<li>idEntity
+		<ul>
+			<li>idAnimatedEntity
+			<ul>
+				<li>idWeapon</li>
+				<li>idAFEntity_Base
+				<ul>
+					<li>idAFEntity_ClawFourFingers</li>
+					<li>idAFEntity_Vehicle
+					<ul>
+						<li>idAFEntity_VehicleFourWheels &lt;------------</li>
+						<li>idAFEntity_VehicleSixWheels</li>
+					</ul>
+					</li>
+					<li>idAFEntity_Gibbable
+					<ul>
+						<li>idAFEntity_WithAttachedHead</li>
+						<li>idActor
+						<ul>
+							<li>idPlayer &lt;------------</li>
+							<li>idAI</li>
+						</ul>
+					</ul>
+					</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+					<p class="fragment">#$%@</p>
+				</section>
+				<section data-background="#900">
+					<h1>More subtle but dangerous problem</h1>
+					<p>"Some code needs to go in both VehicleFourWheels and idPlayer"</p>
+<ul class="fragment">
+	<li>idClass
+	<ul>
+		<li>idEntity
+		<ul>
+			<li>idAnimatedEntity
+			<ul>
+				<li>idWeapon</li>
+				<li>idAFEntity_Base <span class="fragment">&lt;------------------ right here. perfect.</span>
+				<ul>
+					<li>idAFEntity_ClawFourFingers</li>
+					<li>idAFEntity_Vehicle
+					<ul>
+						<li>idAFEntity_VehicleFourWheels &lt;------------</li>
+						<li>idAFEntity_VehicleSixWheels</li>
+					</ul>
+					</li>
+					<li>idAFEntity_Gibbable
+					<ul>
+						<li>idAFEntity_WithAttachedHead</li>
+						<li>idActor
+						<ul>
+							<li>idPlayer &lt;------------</li>
+							<li>idAI</li>
+						</ul>
+					</ul>
+					</li>
+				</ul>
+				</li>
+			</ul>
+			</li>
+		</ul>
+		</li>
+	</ul>
+	</li>
+</ul>
+				</section>
+				<section data-background="#101a26">
+					<h1>The terrible, logical conclusion</h1>
+<pre><code data-trim class="cpp">
+class idEntity : public idClass {
+public:
+	static const int		MAX_PVS_AREAS = 4;
+	static const uint32		INVALID_PREDICTION_KEY = 0xFFFFFFFF;
+
+	int						entityNumber;			// index into the entity list
+	int						entityDefNumber;		// index into the entity def list
+
+	idLinkList&lt;idEntity&gt;	spawnNode;				// for being linked into spawnedEntities list
+	idLinkList&lt;idEntity&gt;	activeNode;				// for being linked into activeEntities list
+	idLinkList&lt;idEntity&gt;	aimAssistNode;			// linked into gameLocal.aimAssistEntities
+
+	idLinkList&lt;idEntity&gt;	snapshotNode;			// for being linked into snapshotEntities list
+	int						snapshotChanged;		// used to detect snapshot state changes
+	int						snapshotBits;			// number of bits this entity occupied in the last snapshot
+	bool					snapshotStale;			// Set to true if this entity is considered stale in the snapshot
+
+	idStr					name;					// name of entity
+	idDict					spawnArgs;				// key/value pairs used to spawn and initialize entity
+	idScriptObject			scriptObject;			// contains all script defined data for this entity
+
+	int						thinkFlags;				// TH_? flags
+	int						dormantStart;			// time that the entity was first closed off from player
+	bool					cinematic;				// during cinematics, entity will only think if cinematic is set
+
+	renderView_t *			renderView;				// for camera views from this entity
+	idEntity *				cameraTarget;			// any remoteRenderMap shaders will use this
+
+	idList&lt; idEntityPtr&lt;idEntity&gt;, TAG_ENTITY &gt;	targets;		// when this entity is activated these entities entity are activated
+
+	int						health;					// FIXME: do all objects really need health?
+
+	struct entityFlags_s {
+		bool				notarget			:1;	// if true never attack or target this entity
+		bool				noknockback			:1;	// if true no knockback from hits
+		bool				takedamage			:1;	// if true this entity can be damaged
+		bool				hidden				:1;	// if true this entity is not visible
+		bool				bindOrientated		:1;	// if true both the master orientation is used for binding
+		bool				solidForTeam		:1;	// if true this entity is considered solid when a physics team mate pushes entities
+		bool				forcePhysicsUpdate	:1;	// if true always update from the physics whether the object moved or not
+		bool				selected			:1;	// if true the entity is selected for editing
+		bool				neverDormant		:1;	// if true the entity never goes dormant
+		bool				isDormant			:1;	// if true the entity is dormant
+		bool				hasAwakened			:1;	// before a monster has been awakened the first time, use full PVS for dormant instead of area-connected
+		bool				networkSync			:1; // if true the entity is synchronized over the network
+		bool				grabbed				:1;	// if true object is currently being grabbed
+		bool				skipReplication		:1; // don't replicate this entity over the network.
+	} fl;
+
+	int						timeGroup;
+
+	bool					noGrab;
+
+	renderEntity_t			xrayEntity;
+	qhandle_t				xrayEntityHandle;
+	const idDeclSkin *		xraySkin;
+
+	void					DetermineTimeGroup( bool slowmo );
+
+	void					SetGrabbedState( bool grabbed );
+	bool					IsGrabbed();
+
+public:
+	ABSTRACT_PROTOTYPE( idEntity );
+
+							idEntity();
+							~idEntity();
+
+	void					Spawn();
+
+	void					Save( idSaveGame *savefile ) const;
+	void					Restore( idRestoreGame *savefile );
+
+	const char *			GetEntityDefName() const;
+	void					SetName( const char *name );
+	const char *			GetName() const;
+	virtual void			UpdateChangeableSpawnArgs( const idDict *source );
+	int						GetEntityNumber() const { return entityNumber; }
+
+							// clients generate views based on all the player specific options,
+							// cameras have custom code, and everything else just uses the axis orientation
+	virtual renderView_t *	GetRenderView();
+
+	// thinking
+	virtual void			Think();
+	bool					CheckDormant();	// dormant == on the active list, but out of PVS
+	virtual	void			DormantBegin();	// called when entity becomes dormant
+	virtual	void			DormantEnd();		// called when entity wakes from being dormant
+	bool					IsActive() const;
+	void					BecomeActive( int flags );
+	void					BecomeInactive( int flags );
+	void					UpdatePVSAreas( const idVec3 &amp;pos );
+	void					BecomeReplicated();
+
+	// visuals
+	virtual void			Present();
+	virtual renderEntity_t *GetRenderEntity();
+	virtual int				GetModelDefHandle();
+	virtual void			SetModel( const char *modelname );
+	void					SetSkin( const idDeclSkin *skin );
+	const idDeclSkin *		GetSkin() const;
+	void					SetShaderParm( int parmnum, float value );
+	virtual void			SetColor( float red, float green, float blue );
+	virtual void			SetColor( const idVec3 &amp;color );
+	virtual void			GetColor( idVec3 &amp;out ) const;
+	virtual void			SetColor( const idVec4 &amp;color );
+	virtual void			GetColor( idVec4 &amp;out ) const;
+	virtual void			FreeModelDef();
+	virtual void			FreeLightDef();
+	virtual void			Hide();
+	virtual void			Show();
+	bool					IsHidden() const;
+	void					UpdateVisuals();
+	void					UpdateModel();
+	void					UpdateModelTransform();
+	virtual void			ProjectOverlay( const idVec3 &amp;origin, const idVec3 &amp;dir, float size, const char *material );
+	int						GetNumPVSAreas();
+	const int *				GetPVSAreas();
+	void					ClearPVSAreas();
+	bool					PhysicsTeamInPVS( pvsHandle_t pvsHandle );
+
+	// animation
+	virtual bool			UpdateAnimationControllers();
+	bool					UpdateRenderEntity( renderEntity_s *renderEntity, const renderView_t *renderView );
+	static bool				ModelCallback( renderEntity_s *renderEntity, const renderView_t *renderView );
+	virtual idAnimator *	GetAnimator();	// returns animator object used by this entity
+
+	// sound
+	virtual bool			CanPlayChatterSounds() const;
+	bool					StartSound( const char *soundName, const s_channelType channel, int soundShaderFlags, bool broadcast, int *length );
+	bool					StartSoundShader( const idSoundShader *shader, const s_channelType channel, int soundShaderFlags, bool broadcast, int *length );
+	void					StopSound( const s_channelType channel, bool broadcast );	// pass SND_CHANNEL_ANY to stop all sounds
+	void					SetSoundVolume( float volume );
+	void					UpdateSound();
+	int						GetListenerId() const;
+	idSoundEmitter *		GetSoundEmitter() const;
+	void					FreeSoundEmitter( bool immediate );
+
+	// entity binding
+	virtual void			PreBind();
+	virtual void			PostBind();
+	virtual void			PreUnbind();
+	virtual void			PostUnbind();
+	void					JoinTeam( idEntity *teammember );
+	void					Bind( idEntity *master, bool orientated );
+	void					BindToJoint( idEntity *master, const char *jointname, bool orientated );
+	void					BindToJoint( idEntity *master, jointHandle_t jointnum, bool orientated );
+	void					BindToBody( idEntity *master, int bodyId, bool orientated );
+	void					Unbind();
+	bool					IsBound() const;
+	bool					IsBoundTo( idEntity *master ) const;
+	idEntity *				GetBindMaster() const;
+	jointHandle_t			GetBindJoint() const;
+	int						GetBindBody() const;
+	idEntity *				GetTeamMaster() const;
+	idEntity *				GetNextTeamEntity() const;
+	void					ConvertLocalToWorldTransform( idVec3 &amp;offset, idMat3 &amp;axis );
+	idVec3					GetLocalVector( const idVec3 &amp;vec ) const;
+	idVec3					GetLocalCoordinates( const idVec3 &amp;vec ) const;
+	idVec3					GetWorldVector( const idVec3 &amp;vec ) const;
+	idVec3					GetWorldCoordinates( const idVec3 &amp;vec ) const;
+	bool					GetMasterPosition( idVec3 &amp;masterOrigin, idMat3 &amp;masterAxis ) const;
+	void					GetWorldVelocities( idVec3 &amp;linearVelocity, idVec3 &amp;angularVelocity ) const;
+
+	// physics
+							// set a new physics object to be used by this entity
+	void					SetPhysics( idPhysics *phys );
+							// get the physics object used by this entity
+	idPhysics *				GetPhysics() const;
+							// restore physics pointer for save games
+	void					RestorePhysics( idPhysics *phys );
+							// run the physics for this entity
+	bool					RunPhysics();
+							// Interpolates the physics, used on MP clients.
+	void					InterpolatePhysics( const float fraction );
+							// InterpolatePhysics actually calls evaluate, this version doesn't.
+	void					InterpolatePhysicsOnly( const float fraction, bool updateTeam = false );
+							// set the origin of the physics object (relative to bindMaster if not NULL)
+	void					SetOrigin( const idVec3 &amp;org );
+							// set the axis of the physics object (relative to bindMaster if not NULL)
+	void					SetAxis( const idMat3 &amp;axis );
+							// use angles to set the axis of the physics object (relative to bindMaster if not NULL)
+	void					SetAngles( const idAngles &amp;ang );
+							// get the floor position underneath the physics object
+	bool					GetFloorPos( float max_dist, idVec3 &amp;floorpos ) const;
+							// retrieves the transformation going from the physics origin/axis to the visual origin/axis
+	virtual bool			GetPhysicsToVisualTransform( idVec3 &amp;origin, idMat3 &amp;axis );
+							// retrieves the transformation going from the physics origin/axis to the sound origin/axis
+	virtual bool			GetPhysicsToSoundTransform( idVec3 &amp;origin, idMat3 &amp;axis );
+							// called from the physics object when colliding, should return true if the physics simulation should stop
+	virtual bool			Collide( const trace_t &amp;collision, const idVec3 &amp;velocity );
+							// retrieves impact information, 'ent' is the entity retrieving the info
+	virtual void			GetImpactInfo( idEntity *ent, int id, const idVec3 &amp;point, impactInfo_t *info );
+							// apply an impulse to the physics object, 'ent' is the entity applying the impulse
+	virtual void			ApplyImpulse( idEntity *ent, int id, const idVec3 &amp;point, const idVec3 &amp;impulse );
+							// add a force to the physics object, 'ent' is the entity adding the force
+	virtual void			AddForce( idEntity *ent, int id, const idVec3 &amp;point, const idVec3 &amp;force );
+							// activate the physics object, 'ent' is the entity activating this entity
+	virtual void			ActivatePhysics( idEntity *ent );
+							// returns true if the physics object is at rest
+	virtual bool			IsAtRest() const;
+							// returns the time the physics object came to rest
+	virtual int				GetRestStartTime() const;
+							// add a contact entity
+	virtual void			AddContactEntity( idEntity *ent );
+							// remove a touching entity
+	virtual void			RemoveContactEntity( idEntity *ent );
+
+	// damage
+							// returns true if this entity can be damaged from the given origin
+	virtual bool			CanDamage( const idVec3 &amp;origin, idVec3 &amp;damagePoint ) const;
+							// applies damage to this entity
+	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &amp;dir, const char *damageDefName, const float damageScale, const int location );
+							// adds a damage effect like overlays, blood, sparks, debris etc.
+	virtual void			AddDamageEffect( const trace_t &amp;collision, const idVec3 &amp;velocity, const char *damageDefName );
+							// callback function for when another entity received damage from this entity.  damage can be adjusted and returned to the caller.
+	virtual void			DamageFeedback( idEntity *victim, idEntity *inflictor, int &amp;damage );
+							// notifies this entity that it is in pain
+	virtual bool			Pain( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &amp;dir, int location );
+							// notifies this entity that is has been killed
+	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &amp;dir, int location );
+
+	// scripting
+	virtual bool			ShouldConstructScriptObjectAtSpawn() const;
+	virtual idThread *		ConstructScriptObject();
+	virtual void			DeconstructScriptObject();
+	void					SetSignal( signalNum_t signalnum, idThread *thread, const function_t *function );
+	void					ClearSignal( idThread *thread, signalNum_t signalnum );
+	void					ClearSignalThread( signalNum_t signalnum, idThread *thread );
+	bool					HasSignal( signalNum_t signalnum ) const;
+	void					Signal( signalNum_t signalnum );
+	void					SignalEvent( idThread *thread, signalNum_t signalnum );
+
+	// gui
+	void					TriggerGuis();
+	bool					HandleGuiCommands( idEntity *entityGui, const char *cmds );
+	virtual bool			HandleSingleGuiCommand( idEntity *entityGui, idLexer *src );
+
+	// targets
+	void					FindTargets();
+	void					RemoveNullTargets();
+	void					ActivateTargets( idEntity *activator ) const;
+
+	// misc
+	virtual void			Teleport( const idVec3 &amp;origin, const idAngles &amp;angles, idEntity *destination );
+	bool					TouchTriggers() const;
+	idCurve_Spline&lt;idVec3&gt; *GetSpline() const;
+	virtual void			ShowEditingDialog();
+
+	enum {
+		EVENT_STARTSOUNDSHADER,
+		EVENT_STOPSOUNDSHADER,
+		EVENT_MAXEVENTS
+	};
+
+	// Called on clients in an MP game, does the actual interpolation for the entity.
+	// This function will eventually replace ClientPredictionThink completely.
+	virtual void			ClientThink( const int curTime, const float fraction, const bool predict );
+
+	virtual void			ClientPredictionThink();
+	virtual void			WriteToSnapshot( idBitMsg &amp;msg ) const;
+	void					ReadFromSnapshot_Ex( const idBitMsg &amp;msg );
+	virtual void			ReadFromSnapshot( const idBitMsg &amp;msg );
+	virtual bool			ServerReceiveEvent( int event, int time, const idBitMsg &amp;msg );
+	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &amp;msg );
+
+	void					WriteBindToSnapshot( idBitMsg &amp;msg ) const;
+	void					ReadBindFromSnapshot( const idBitMsg &amp;msg );
+	void					WriteColorToSnapshot( idBitMsg &amp;msg ) const;
+	void					ReadColorFromSnapshot( const idBitMsg &amp;msg );
+	void					WriteGUIToSnapshot( idBitMsg &amp;msg ) const;
+	void					ReadGUIFromSnapshot( const idBitMsg &amp;msg );
+
+	void					ServerSendEvent( int eventId, const idBitMsg *msg, bool saveEvent, lobbyUserID_t excluding = lobbyUserID_t() ) const;
+	void					ClientSendEvent( int eventId, const idBitMsg *msg ) const;
+
+	void					SetUseClientInterpolation( bool use ) { useClientInterpolation = use; }
+
+	void					SetSkipReplication( const bool skip ) { fl.skipReplication = skip; }
+	bool					GetSkipReplication() const { return fl.skipReplication; }
+	bool					IsReplicated() const { return  GetEntityNumber() &lt; ENTITYNUM_FIRST_NON_REPLICATED; }
+
+	void					CreateDeltasFromOldOriginAndAxis( const idVec3 &amp; oldOrigin, const idMat3 &amp; oldAxis );
+	void					DecayOriginAndAxisDelta();
+	uint32					GetPredictedKey() { return predictionKey; }
+	void					SetPredictedKey( uint32 key_ ) { predictionKey = key_; }
+
+	void					FlagNewSnapshot();
+
+	idEntity*				GetTeamChain() { return teamChain; }
+
+	// It is only safe to interpolate if this entity has received two snapshots.
+	enum interpolationBehavior_t {
+		USE_NO_INTERPOLATION,
+		USE_LATEST_SNAP_ONLY,
+		USE_INTERPOLATION
+	};
+
+	interpolationBehavior_t GetInterpolationBehavior() const { return interpolationBehavior; }
+	unsigned int			GetNumSnapshotsReceived() const { return snapshotsReceived; }
+
+protected:
+	renderEntity_t			renderEntity;						// used to present a model to the renderer
+	int						modelDefHandle;						// handle to static renderer model
+	refSound_t				refSound;							// used to present sound to the audio engine
+
+	idVec3					GetOriginDelta() const { return originDelta; }
+	idMat3					GetAxisDelta() const { return axisDelta; }
+	
+private:
+	idPhysics_Static		defaultPhysicsObj;					// default physics object
+	idPhysics *				physics;							// physics used for this entity
+	idEntity *				bindMaster;							// entity bound to if unequal NULL
+	jointHandle_t			bindJoint;							// joint bound to if unequal INVALID_JOINT
+	int						bindBody;							// body bound to if unequal -1
+	idEntity *				teamMaster;							// master of the physics team
+	idEntity *				teamChain;							// next entity in physics team
+	bool					useClientInterpolation;				// disables interpolation for some objects (handy for weapon world models)
+	int						numPVSAreas;						// number of renderer areas the entity covers
+	int						PVSAreas[MAX_PVS_AREAS];			// numbers of the renderer areas the entity covers
+
+	signalList_t *			signals;
+
+	int						mpGUIState;							// local cache to avoid systematic SetStateInt
+
+	uint32					predictionKey;						// Unique key used to sync predicted ents (projectiles) in MP.
+
+	// Delta values that are set when the server or client disagree on where the render model should be. If this happens,
+	// they resolve it through DecayOriginAndAxisDelta()
+	idVec3					originDelta;
+	idMat3					axisDelta;
+
+	interpolationBehavior_t	interpolationBehavior;	
+	unsigned int			snapshotsReceived;
+
+private:
+	void					FixupLocalizedStrings();
+
+	bool					DoDormantTests();				// dormant == on the active list, but out of PVS
+
+	// physics
+							// initialize the default physics
+	void					InitDefaultPhysics( const idVec3 &amp;origin, const idMat3 &amp;axis );
+							// update visual position from the physics
+	void					UpdateFromPhysics( bool moveBack );
+							// get physics timestep
+	virtual int				GetPhysicsTimeStep() const;
+
+	// entity binding
+	bool					InitBind( idEntity *master );		// initialize an entity binding
+	void					FinishBind();					// finish an entity binding
+	void					RemoveBinds();				// deletes any entities bound to this object
+	void					QuitTeam();					// leave the current team
+
+	void					UpdatePVSAreas();
+
+	// events
+	void					Event_GetName();
+	void					Event_SetName( const char *name );
+	void					Event_FindTargets();
+	void					Event_ActivateTargets( idEntity *activator );
+	void					Event_NumTargets();
+	void					Event_GetTarget( float index );
+	void					Event_RandomTarget( const char *ignore );
+	void					Event_Bind( idEntity *master );
+	void					Event_BindPosition( idEntity *master );
+	void					Event_BindToJoint( idEntity *master, const char *jointname, float orientated );
+	void					Event_Unbind();
+	void					Event_RemoveBinds();
+	void					Event_SpawnBind();
+	void					Event_SetOwner( idEntity *owner );
+	void					Event_SetModel( const char *modelname );
+	void					Event_SetSkin( const char *skinname );
+	void					Event_GetShaderParm( int parmnum );
+	void					Event_SetShaderParm( int parmnum, float value );
+	void					Event_SetShaderParms( float parm0, float parm1, float parm2, float parm3 );
+	void					Event_SetColor( float red, float green, float blue );
+	void					Event_GetColor();
+	void					Event_IsHidden();
+	void					Event_Hide();
+	void					Event_Show();
+	void					Event_CacheSoundShader( const char *soundName );
+	void					Event_StartSoundShader( const char *soundName, int channel );
+	void					Event_StopSound( int channel, int netSync );
+	void					Event_StartSound( const char *soundName, int channel, int netSync );
+	void					Event_FadeSound( int channel, float to, float over );
+	void					Event_GetWorldOrigin();
+	void					Event_SetWorldOrigin( idVec3 const &amp;org );
+	void					Event_GetOrigin();
+	void					Event_SetOrigin( const idVec3 &amp;org );
+	void					Event_GetAngles();
+	void					Event_SetAngles( const idAngles &amp;ang );
+	void					Event_SetLinearVelocity( const idVec3 &amp;velocity );
+	void					Event_GetLinearVelocity();
+	void					Event_SetAngularVelocity( const idVec3 &amp;velocity );
+	void					Event_GetAngularVelocity();
+	void					Event_SetSize( const idVec3 &amp;mins, const idVec3 &amp;maxs );
+	void					Event_GetSize();
+	void					Event_GetMins();
+	void					Event_GetMaxs();
+	void					Event_Touches( idEntity *ent );
+	void					Event_SetGuiParm( const char *key, const char *val );
+	void					Event_SetGuiFloat( const char *key, float f );
+	void					Event_GetNextKey( const char *prefix, const char *lastMatch );
+	void					Event_SetKey( const char *key, const char *value );
+	void					Event_GetKey( const char *key );
+	void					Event_GetIntKey( const char *key );
+	void					Event_GetFloatKey( const char *key );
+	void					Event_GetVectorKey( const char *key );
+	void					Event_GetEntityKey( const char *key );
+	void					Event_RestorePosition();
+	void					Event_UpdateCameraTarget();
+	void					Event_DistanceTo( idEntity *ent );
+	void					Event_DistanceToPoint( const idVec3 &amp;point );
+	void					Event_StartFx( const char *fx );
+	void					Event_WaitFrame();
+	void					Event_Wait( float time );
+	void					Event_HasFunction( const char *name );
+	void					Event_CallFunction( const char *name );
+	void					Event_SetNeverDormant( int enable );
+	void					Event_SetGui( int guiNum, const char *guiName);
+	void					Event_PrecacheGui( const char *guiName );
+	void					Event_GetGuiParm(int guiNum, const char *key);
+	void					Event_GetGuiParmFloat(int guiNum, const char *key);
+	void					Event_GuiNamedEvent(int guiNum, const char *event);
+};
+</code></pre>
+				</section>
+				<section data-background="#700">
+					<h1>Unity to the rescue</h1>
+					<img src="unity.jpg" />
+				</section>
+				<section data-background="#700">
+					<h1>Revised structure</h1>
+<ul>
+	<li>idPlayer
+	<ul>
+		<li>idTransform</li>
+		<li>idHealth</li>
+		<li>idAnimatedModel</li>
+		<li>idAnimator</li>
+		<li>idRigidBody</li>
+		<li>idBipedalCharacterController</li>
+		<li>idPlayerController</li>
+	</ul>
+	</li>
+
+	<li>idAFEntity_VehicleFourWheels
+	<ul>
+		<li>idTransform
+		<li>idAnimatedModel
+		<li>idRigidBody
+		<li>idFourWheelController
+	</ul>
+	</li>
+
+	<li>...</li>
+</ul>
+				</section>
+				<section data-background="#700">
+					<h1>The trick so far</h1>
+					<p>In general, favor composition over inheritance.</p>
+				</section>
+				<section data-background="#700">
+					<h1>Thank you!</h1>
+					<h3>Questions?</h3>
+					<small>
+						Evan Todd<br />
+						<a href="http://etodd.io">etodd.io</a><br />
+						<a href="http://twitter.com/etodd_">@etodd_</a>
+					</small>
+				</section>
+			</div>
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
+		<script>
+			Reveal.initialize(
+			{
+				controls: false,
+				progress: true,
+				history: true,
+				center: true,
+				transition: 'slide',
+				backgroundTransition: 'slide',
+				transitionSpeed: 'superfast',
+				dependencies:
+				[
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: false, callback: function() { hljs.initHighlightingOnLoad(); } },
+				],
+			});
+
+			if (window.location.search.match(/print-pdf/gi))
+				$('head').append($('<link rel="stylesheet" type="text/css" href="reveal.js/css/print/pdf.css" />'));
+		</script>
+	</body>
+</html>

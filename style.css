@@ -1,0 +1,341 @@
+@font-face
+{
+	font-family: 'PT Sans';
+	src: url(PT_Sans-Web-Regular.ttf);
+}
+
+@font-face
+{
+	font-family: 'PT Sans';
+	font-weight: bold;
+	src: url(PT_Sans-Web-Bold.ttf);
+}
+
+@font-face
+{
+	font-family: 'PT Sans';
+	font-style: italic;
+	src: url(PT_Sans-Web-Italic.ttf);
+}
+
+@font-face
+{
+	font-family: 'PT Sans';
+	font-weight: bold;
+	font-style: italic;
+	src: url(PT_Sans-Web-BoldItalic.ttf);
+}
+
+@font-face
+{
+	font-family: 'Bitstream Vera Sans Mono';
+	src: url(VeraMono.ttf);
+}
+
+body
+{
+	background-color: #000;
+}
+
+.reveal
+{
+	font-family: 'PT Sans', sans-serif;
+	line-height: 1.5em;
+	font-size: 1.75em;
+	color: #fff;
+}
+
+::selection
+{
+	background-color: #38a;
+}
+
+.reveal .slides > section, .reveal .slides > section > section
+{
+  -webkit-transition: -webkit-transform-origin 800ms linear, -webkit-transform 800ms linear, visibility 800ms linear;
+          transition: -ms-transform-origin 800ms linear, transform 800ms linear, visibility 800ms linear;
+          transition: transform-origin 800ms linear, transform 800ms linear, visibility 800ms linear;
+}
+
+.reveal[data-transition-speed="superfast"] .slides section,
+.reveal[data-transition-speed="superfast"] .slide-background
+{
+  -webkit-transition-duration: 250ms;
+          transition-duration: 250ms;
+}
+
+.reveal .slides > section.past, .reveal .slides > section.future, .reveal .slides > section > section.past, .reveal .slides > section > section.future
+{
+	opacity: 1;
+	visibility: hidden;
+}
+
+.reveal .slide-background
+{
+  -webkit-transition: all 800ms linear;
+          transition: all 800ms linear;
+}
+
+.reveal .slides > section > section[data-transition=slide].past, .reveal .slides > section > section[data-transition~=slide-out].past, .reveal.slide .slides > section > section:not([data-transition]).past
+{
+  -webkit-transform: translate(0, -300%);
+      -ms-transform: translate(0, -300%);
+          transform: translate(0, -300%);
+}
+
+.reveal .slides > section > section[data-transition=slide].future, .reveal .slides > section > section[data-transition~=slide-in].future, .reveal.slide .slides > section > section:not([data-transition]).future
+{
+  -webkit-transform: translate(0, 300%);
+      -ms-transform: translate(0, 300%);
+          transform: translate(0, 300%);
+}
+
+/*********************************************
+ * HEADERS
+ *********************************************/
+.reveal h1,
+.reveal h2,
+.reveal h3,
+.reveal h4,
+.reveal h5,
+.reveal h6
+{
+	margin: 0 0 0.5em 0;
+	font-family: 'PT Sans', sans-serif;
+	font-weight: bold;
+}
+
+.reveal h1 { font-size: 2em; }
+.reveal h2 { font-size: 1.5em; }
+.reveal h3 { font-size: 1.17em; }
+.reveal h4 { font-size: 1.12em; }
+.reveal h5 { font-size: .83em; }
+.reveal h6 { font-size: .75em; }
+.reveal small { font-size: .83em }
+
+/*********************************************
+ * LINKS
+ *********************************************/
+.reveal a:not(.image)
+{
+	color: #fff;
+	text-decoration: underline;
+}
+
+.reveal a:not(.image):hover
+{
+	color: #ddd;
+	text-decoration: none;
+}
+
+.reveal p
+{
+	margin-top: 1em;
+	margin-bottom: 1em;
+}
+
+.reveal pre
+{
+	font-size: 0.75em;
+	font-family: 'Bitstream Vera Sans Mono', monospace;
+}
+
+/*********************************************
+ * PROGRESS BAR
+ *********************************************/
+.reveal .progress span
+{
+	background: #8df;
+	-webkit-transition: width 250ms linear;
+	-moz-transition: width 250ms linear;
+	-ms-transition: width 250ms linear;
+	-o-transition: width 250ms linear;
+	transition: width 250ms linear;
+}
+
+.reveal iframe
+{
+	display: block;
+	width: 500px;
+	height: 500px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+img
+{
+	max-height: 600px;
+}
+
+input
+{
+	background: #101a26;
+	color: #eddac0;
+	border: none;
+	padding: 0.5em;
+	font-size: 1em;
+	font-family: 'Bitstream Vera Sans Mono', monospace;
+}
+
+input.invalid
+{
+	background: #500000;
+}
+
+.reveal table
+{
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.reveal table td
+{
+	padding: 0.25em;
+}
+
+.reveal table.matrix td, .reveal table.matrix td
+{
+	padding: 0px;
+	font-family: 'Bitstream Vera Sans Mono', monospace;
+}
+
+table.matrix input
+{
+	padding: 0.25em;
+}
+
+div#color-swatch
+{
+	width: 100px;
+	height: 100px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/*********************************************
+ * SYNTAX HIGHLIGHTING
+ *********************************************/
+
+.reveal pre
+{
+	text-align: left;
+	max-height: 26em;
+	overflow: auto;
+}
+
+.reveal ul
+{
+	text-align: left;
+	padding-left: 2em;
+	list-style-type: none;
+}
+
+.reveal pre code
+{
+	display: block;
+	overflow: hidden;
+	max-height: none;
+	color: #eddac0;
+	word-wrap: inherit;
+	tab-size: 4;
+	-moz-tab-size: 4;
+	-o-tab-size: 4;
+}
+
+pre .hljs-keyword,
+pre .hljs-tag,
+pre .hljs-css .hljs-class,
+pre .hljs-css .hljs-id,
+pre .hljs-lisp .hljs-title,
+pre .hljs-nginx .hljs-title,
+pre .hljs-request,
+pre .hljs-status,
+pre .hljs-clojure .hljs-attribute
+{
+	color: #40c4ff;
+}
+
+pre .hljs-number,
+pre .hljs-string,
+pre .hljs-date
+{
+	color: #ff80ff;
+}
+
+pre .hljs-dos .hljs-envvar,
+pre .hljs-dos .hljs-stream,
+pre .hljs-variable,
+pre .hljs-title,
+pre .hljs-apache .hljs-sqbracket
+{
+	color: #00ffff;
+}
+
+pre .hljs-dos .hljs-flow,
+pre .hljs-diff .hljs-change,
+pre .hljs-python .hljs-exception,
+pre .hljs-python .hljs-built_in,
+pre .hljs-literal,
+pre .hljs-tex .hljs-special
+{
+	color: #ff80ff;
+}
+
+pre .hljs-diff .hljs-chunk,
+pre .hljs-subst
+{
+	color: #8f8f8f;
+}
+
+pre .hljs-dos .hljs-keyword,
+pre .hljs-python .hljs-decorator,
+pre .hljs-haskell .hljs-type,
+pre .hljs-diff .hljs-header,
+pre .hljs-ruby .hljs-class .hljs-parent,
+pre .hljs-apache .hljs-tag,
+pre .hljs-nginx .hljs-built_in,
+pre .hljs-tex .hljs-command,
+pre .hljs-prompt
+{
+	color: #efef8f;
+}
+
+pre .hljs-diff .hljs-deletion,
+pre .hljs-tag .hljs-value,
+pre .hljs-preprocessor,
+pre .hljs-built_in,
+pre .hljs-sql .hljs-aggregate,
+pre .hljs-javadoc,
+pre .hljs-smalltalk .hljs-class,
+pre .hljs-smalltalk .hljs-localvars,
+pre .hljs-smalltalk .hljs-array,
+pre .hljs-css .hljs-rules .hljs-value,
+pre .hljs-attr_selector,
+pre .hljs-pseudo,
+pre .hljs-apache .hljs-cbracket,
+pre .hljs-tex .hljs-formula
+{
+	color: #00ffff;
+}
+
+pre .hljs-shebang,
+pre .hljs-diff .hljs-addition,
+pre .hljs-comment,
+pre .hljs-java .hljs-annotation,
+pre .hljs-template_comment,
+pre .hljs-pi,
+pre .hljs-doctype
+{
+	color: #7cfc00;
+}
+
+pre .hljs-coffeescript .hljs-javascript,
+pre .hljs-javascript .hljs-xml,
+pre .hljs-tex .hljs-formula,
+pre .hljs-xml .hljs-javascript,
+pre .hljs-xml .hljs-vbscript,
+pre .hljs-xml .hljs-css,
+pre .hljs-xml .hljs-cdata
+{
+	opacity: 0.5;
+}
