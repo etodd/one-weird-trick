@@ -1,20 +1,18 @@
-# Shaders - How Do They Work?
+# One Weird Trick to Write Better Code
 
-[Click through the slides](http://etodd.github.io/shaders/)
+Slides for a talk at Dev Workshop Conf 2015.
+
+[Click through the slides](http://etodd.github.io/one-weird-trick/)
 
 ## Installation
 
 ```shell
-git clone https://github.com/etodd/shaders.git
-cd shaders
+git clone https://github.com/etodd/one-weird-trick.git
+cd one-weird-trick
 git submodule update --init
 python -m SimpleHTTPServer
 # visit http://localhost:8000
 ```
-
-## Attribution
-
-Pipeline overview animation on slide 3 from the excellent [Simon Schreibt's Render Hell](http://simonschreibt.de/gat/renderhell/).
 
 ## License
 
