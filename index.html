@@ -21,7 +21,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section data-background="#900">
+				<section data-background="#101a26">
 					<h1>One Weird Trick to Write Better Code</h1>
 					<small>
 						Evan Todd<br />
@@ -29,151 +29,238 @@
 						&#8592;&#8594;
 					</small>
 				</section>
-				<section data-background="#900">
-					<h1>This trick is not mine</h1>
-					<p>For more information, follow actual smart people</p>
+				<section data-background="#158">
+					<h1>In search of the One Weird Trick</h1>
+					<p>I'll talk about a lot of tricks</p>
+					<p>But we're looking for the One Weird Trick to rule them all</p>
 				</section>
 				<section data-background="#101a26">
-					<h1>What we've all been taught</h1>
+					<h1>Start at the beginning</h1>
+					<img src="img/ninjawars.png" />
+				</section>
+				<section data-background="#101a26">
+					<h1>We've all been here</h1>
+					<pre><code data-trim class="javascript">
+var x = 314;
+var y = 8;
+var prevy= 1;
+var prevx= 1;
+var prevsw= 0;
+var row= 304;
+var endrow= 142;
+var sword= 296;
+var yrow = 0;
+var yendrow = 186;
+var I = 0;
+var e = 0;
+var counter = 0;
+var found = 0;
+var esword = 26;
+var eprevsw = 8;
+var bluehealth = 40;
+var redhealth = 40;
+var n = 0;
+var you = 'ninja';
+var bullet = 'sword';
+var enemy = 'enemy';
+var ebullet = 'enemysword';
+var besieged = 0;
+var siegecount = 0;
+var esiegecount = 0;
+var ebesieged = 0;
+var healthcount = 0;
+var player = 0;
+var starcount = 0;
+var infortress = false;
+var prevyou = you;
+var einfortress = false;
+var prevenemy = enemy;
+var previmg = "";
+var prevbullet= "";
+var eprevbullet= "";
+var randnum = 0;
+var randnum2 = 0;
+var randnum3 = 0;
+var randnum4 = 0;
+var buildcount = 0;
+var characters = new Array(4);
+characters = ['ninja','tank','heli','builder'];
+var bullets = new Array(3);
+bullets = ['sword','bullet','5cal','sword'];
+var echaracters = new Array(3);
+echaracters = ['enemy','tank2','eheli','ebuilder'];
+var ebullets = new Array(3);
+ebullets = ['enemysword','bullet2','e5cal','enemysword'];
+var health = new Array(4);
+health = [40,30,20,10];
+var prevorb = 0;
+var prevnum = 0;
+					</code></pre>
+				</section>
+				<section data-background="#158">
+					<h1>Trick #1</h1>
+					<p>Globals are evil</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>Trick #2: object-oriented to the rescue!</h1>
 					<pre><code data-trim class="csharp">
-class Person
+class Ninja
 {
-	public virtual bool IsAlwaysRight() { return false; }
+	int x, y;
+	int previousX, previousY;
+	int health = 100;
 }
 
-class Employee : public Person
+class Sword
 {
-	public void Fire();
+	int x, y;
+	int previousX, previousY;
+	int sharpness = 9000;
+}
+					</pre></code>
+				</section>
+				<section data-background="#101a26">
+					<h1>We can even do this</h1>
+					<pre><code data-trim class="csharp">
+class Movable
+{
+	int x, y;
+	int previousX, previousY;
 }
 
-class Customer : public Person
+class Ninja : public Movable
 {
-	public override bool IsAlwaysRight() { return true; }
+	int health = 100;
+}
+
+class Sword : public Movable
+{
+	int sharpness = 9000;
 }
 					</code></pre>
 				</section>
-				<section data-background="#900">
+				<section data-background="#158">
 					<h1>Classic game code</h1>
 					<p>
 						Doom 3 source - <a href="https://github.com/id-Software/DOOM-3-BFG">https://github.com/id-Software/DOOM-3-BFG</a>
 					</p>
-<ul>
-	<li>idClass
-	<ul>
-		<li>idEntity
-		<ul>
-			<li>idAnimatedEntity
-			<ul>
-				<li>idWeapon</li>
-				<li>idAFEntity_Base
-				<ul>
-					<li>idAFEntity_ClawFourFingers</li>
-					<li>idAFEntity_Vehicle
 					<ul>
-						<li>idAFEntity_VehicleFourWheels</li>
-						<li>idAFEntity_VehicleSixWheels</li>
-					</ul>
-					</li>
-					<li>idAFEntity_Gibbable
-					<ul>
-						<li>idAFEntity_WithAttachedHead</li>
-						<li>idActor
+						<li>idClass
 						<ul>
-							<li>idPlayer</li>
-							<li>idAI</li>
+							<li>idEntity
+							<ul>
+								<li>idAnimatedEntity
+								<ul>
+									<li>idWeapon</li>
+									<li>idAFEntity_Base
+									<ul>
+										<li>idAFEntity_ClawFourFingers</li>
+										<li>idAFEntity_Vehicle
+										<ul>
+											<li>idAFEntity_VehicleFourWheels</li>
+											<li>idAFEntity_VehicleSixWheels</li>
+										</ul>
+										</li>
+										<li>idAFEntity_Gibbable
+										<ul>
+											<li>idAFEntity_WithAttachedHead</li>
+											<li>idActor
+											<ul>
+												<li>idPlayer</li>
+												<li>idAI</li>
+											</ul>
+										</ul>
+										</li>
+									</ul>
+									</li>
+								</ul>
+								</li>
+							</ul>
+							</li>
 						</ul>
+						</li>
 					</ul>
-					</li>
-				</ul>
-				</li>
-			</ul>
-			</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
 				</section>
-				<section data-background="#900">
+				<section data-background="#822">
 					<h1>Problem</h1>
 					<p>"The player is now a car"</p>
-<ul class="fragment">
-	<li>idClass
-	<ul>
-		<li>idEntity
-		<ul>
-			<li>idAnimatedEntity
-			<ul>
-				<li>idWeapon</li>
-				<li>idAFEntity_Base
-				<ul>
-					<li>idAFEntity_ClawFourFingers</li>
-					<li>idAFEntity_Vehicle
-					<ul>
-						<li>idAFEntity_VehicleFourWheels &lt;------------</li>
-						<li>idAFEntity_VehicleSixWheels</li>
-					</ul>
-					</li>
-					<li>idAFEntity_Gibbable
-					<ul>
-						<li>idAFEntity_WithAttachedHead</li>
-						<li>idActor
+					<ul class="fragment">
+						<li>idClass
 						<ul>
-							<li>idPlayer &lt;------------</li>
-							<li>idAI</li>
+							<li>idEntity
+							<ul>
+								<li>idAnimatedEntity
+								<ul>
+									<li>idWeapon</li>
+									<li>idAFEntity_Base
+									<ul>
+										<li>idAFEntity_ClawFourFingers</li>
+										<li>idAFEntity_Vehicle
+										<ul>
+											<li>idAFEntity_VehicleFourWheels &lt;------------</li>
+											<li>idAFEntity_VehicleSixWheels</li>
+										</ul>
+										</li>
+										<li>idAFEntity_Gibbable
+										<ul>
+											<li>idAFEntity_WithAttachedHead</li>
+											<li>idActor
+											<ul>
+												<li>idPlayer &lt;------------</li>
+												<li>idAI</li>
+											</ul>
+										</ul>
+										</li>
+									</ul>
+									</li>
+								</ul>
+								</li>
+							</ul>
+							</li>
 						</ul>
+						</li>
 					</ul>
-					</li>
-				</ul>
-				</li>
-			</ul>
-			</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
 					<p class="fragment">#$%@</p>
 				</section>
-				<section data-background="#900">
+				<section data-background="#622">
 					<h1>More subtle but dangerous problem</h1>
 					<p>"Some code needs to go in both VehicleFourWheels and idPlayer"</p>
-<ul class="fragment">
-	<li>idClass
-	<ul>
-		<li>idEntity
-		<ul>
-			<li>idAnimatedEntity
-			<ul>
-				<li>idWeapon</li>
-				<li>idAFEntity_Base <span class="fragment">&lt;------------------ right here. perfect.</span>
-				<ul>
-					<li>idAFEntity_ClawFourFingers</li>
-					<li>idAFEntity_Vehicle
-					<ul>
-						<li>idAFEntity_VehicleFourWheels &lt;------------</li>
-						<li>idAFEntity_VehicleSixWheels</li>
-					</ul>
-					</li>
-					<li>idAFEntity_Gibbable
-					<ul>
-						<li>idAFEntity_WithAttachedHead</li>
-						<li>idActor
+					<ul class="fragment">
+						<li>idClass
 						<ul>
-							<li>idPlayer &lt;------------</li>
-							<li>idAI</li>
+							<li>idEntity
+							<ul>
+								<li>idAnimatedEntity
+								<ul>
+									<li>idWeapon</li>
+									<li>idAFEntity_Base <span class="fragment">&lt;------------------ right here. perfect.</span>
+									<ul>
+										<li>idAFEntity_ClawFourFingers</li>
+										<li>idAFEntity_Vehicle
+										<ul>
+											<li>idAFEntity_VehicleFourWheels &lt;------------</li>
+											<li>idAFEntity_VehicleSixWheels</li>
+										</ul>
+										</li>
+										<li>idAFEntity_Gibbable
+										<ul>
+											<li>idAFEntity_WithAttachedHead</li>
+											<li>idActor
+											<ul>
+												<li>idPlayer &lt;------------</li>
+												<li>idAI</li>
+											</ul>
+										</ul>
+										</li>
+									</ul>
+									</li>
+								</ul>
+								</li>
+							</ul>
+							</li>
 						</ul>
+						</li>
 					</ul>
-					</li>
-				</ul>
-				</li>
-			</ul>
-			</li>
-		</ul>
-		</li>
-	</ul>
-	</li>
-</ul>
 				</section>
 				<section data-background="#101a26">
 					<h1>The terrible, logical conclusion</h1>
@@ -606,42 +693,123 @@ private:
 };
 </code></pre>
 				</section>
-				<section data-background="#700">
+				<section data-background="#158">
 					<h1>Unity to the rescue</h1>
-					<img src="unity.jpg" />
+					<img src="img/unity.jpg" />
 				</section>
-				<section data-background="#700">
+				<section data-background="#101a26">
 					<h1>Revised structure</h1>
-<ul>
-	<li>idPlayer
-	<ul>
-		<li>idTransform</li>
-		<li>idHealth</li>
-		<li>idAnimatedModel</li>
-		<li>idAnimator</li>
-		<li>idRigidBody</li>
-		<li>idBipedalCharacterController</li>
-		<li>idPlayerController</li>
-	</ul>
-	</li>
+					<ul>
+						<li>idPlayer
+						<ul>
+							<li>idTransform</li>
+							<li>idHealth</li>
+							<li>idAnimatedModel</li>
+							<li>idAnimator</li>
+							<li>idRigidBody</li>
+							<li>idBipedalCharacterController</li>
+							<li>idPlayerController</li>
+						</ul>
+						</li>
 
-	<li>idAFEntity_VehicleFourWheels
-	<ul>
-		<li>idTransform
-		<li>idAnimatedModel
-		<li>idRigidBody
-		<li>idFourWheelController
-	</ul>
-	</li>
+						<li>idAFEntity_VehicleFourWheels
+						<ul>
+							<li>idTransform
+							<li>idAnimatedModel
+							<li>idRigidBody
+							<li>idFourWheelController
+						</ul>
+						</li>
 
-	<li>...</li>
-</ul>
+						<li>...</li>
+					</ul>
 				</section>
-				<section data-background="#700">
-					<h1>The trick so far</h1>
-					<p>In general, favor composition over inheritance.</p>
+				<section data-background="#158">
+					<h1>Trick #3</h1>
+					<p>In general, favor composition over inheritance</p>
 				</section>
-				<section data-background="#700">
+				<section data-background="#822">
+					<h3>Why are globals evil (trick #1)?<br />Why is OOP better (trick #2)?<br />Why is composition even better (trick #3)?</h3>
+					<p>You won't believe what happens next...</p>
+				</section>
+				<section data-background="#158">
+					<h1>Let's talk about performance</h1>
+				</section>
+				<section data-background="#101a26">
+					<h1>Which function is slower?</h1>
+					<pre><code class="csharp">
+double a(double x)
+{
+	return Math.sqrt(x);
+}
+
+static double[] data;
+double b(int x)
+{
+	return data[x];
+}
+					</pre></code>
+				</section>
+				<section data-background="#158">
+					<p>Hopefully both get compiled into roughly one instruction each</p>
+					<p>a = some sort of sqrt instruction</p>
+					<p>b = some sort of load instruction</p>
+				</section>
+				<section data-background="#822">
+					<h1>Instruction latency</h1>
+					<table>
+						<tr><td>sqrtps</td><td>14 cycles</td></tr>
+						<tr><td>lea</td><td>?</td></tr>
+					</table>
+					<small>
+						<a href="http://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html">
+							http://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html
+						</a>
+					</small>
+				</section>
+				<section data-background="#158">
+					<h1>Where's the data?</h1>
+					<table>
+						<tr><td>Registers</td><td>~40 per core, sort of</td><td></td><td>0 cycles</td></tr>
+						<tr><td>L1</td><td>32KB per core</td><td>64B line</td><td>4 cycles</td></tr>
+						<tr><td>L2</td><td>256KB per core</td><td>64B line</td><td>11 cycles</td></tr>
+						<tr><td>L3</td><td>6MB</td><td>64B line</td><td>40-75 cycles</td></tr>
+						<tr><td>Main memory</td><td>8GB</td><td>4KB page</td><td>100-300 cycles</td></tr>
+					</table>
+				</section>
+				<section id="l1" data-background="#822">
+					<h1>L1</h1>
+				</section>
+				<section id="l2" data-background="#822">
+					<h1>L2/sqrtps</h1>
+				</section>
+				<section id="l3" data-background="#822">
+					<h1>L3</h1>
+				</section>
+				<section id="ram" data-background="#822">
+					<h1>RAM</h1>
+				</section>
+				<section data-background="#158">
+					<h1>Back to Doom</h1>
+					<p>Task: find all objects near a point</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>Something like this</h1>
+					<pre><code class="cpp">
+for
+(
+	idEntity* ent = activeEntities.Next();
+	ent != NULL;
+	ent = ent-&gt;activeNode.Next()
+)
+{
+	idVec3 diff = ent-&gt;GetPhysics()-&gt;GetOrigin() - pos;
+	if (diff.Length() &lt; radius)
+		result.Append(ent);
+}
+					</code></pre>
+				</section>
+				<section data-background="#101a26">
 					<h1>Thank you!</h1>
 					<h3>Questions?</h3>
 					<small>

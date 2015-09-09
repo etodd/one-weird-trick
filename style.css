@@ -1,21 +1,21 @@
 @font-face
 {
 	font-family: 'PT Sans';
-	src: url(PT_Sans-Web-Regular.ttf);
+	src: url(font/PT_Sans-Web-Regular.ttf);
 }
 
 @font-face
 {
 	font-family: 'PT Sans';
 	font-weight: bold;
-	src: url(PT_Sans-Web-Bold.ttf);
+	src: url(font/PT_Sans-Web-Bold.ttf);
 }
 
 @font-face
 {
 	font-family: 'PT Sans';
 	font-style: italic;
-	src: url(PT_Sans-Web-Italic.ttf);
+	src: url(font/PT_Sans-Web-Italic.ttf);
 }
 
 @font-face
@@ -23,13 +23,13 @@
 	font-family: 'PT Sans';
 	font-weight: bold;
 	font-style: italic;
-	src: url(PT_Sans-Web-BoldItalic.ttf);
+	src: url(font/PT_Sans-Web-BoldItalic.ttf);
 }
 
 @font-face
 {
 	font-family: 'Bitstream Vera Sans Mono';
-	src: url(VeraMono.ttf);
+	src: url(font/VeraMono.ttf);
 }
 
 body
@@ -90,6 +90,30 @@ body
           transform: translate(0, 300%);
 }
 
+#l1
+{
+  -webkit-transition-duration: 250ms;
+          transition-duration: 250ms;
+}
+
+#l2
+{
+  -webkit-transition-duration: 688ms;
+          transition-duration: 688ms;
+}
+
+#l3
+{
+  -webkit-transition-duration: 4063ms;
+          transition-duration: 4063ms;
+}
+
+#ram
+{
+  -webkit-transition-duration: 12500ms;
+          transition-duration: 12500ms;
+}
+
 /*********************************************
  * HEADERS
  *********************************************/
@@ -103,6 +127,7 @@ body
 	margin: 0 0 0.5em 0;
 	font-family: 'PT Sans', sans-serif;
 	font-weight: bold;
+	line-height: 1.15em;
 }
 
 .reveal h1 { font-size: 2em; }
@@ -119,13 +144,13 @@ body
 .reveal a:not(.image)
 {
 	color: #fff;
-	text-decoration: underline;
+	text-decoration: none;
+	font-weight: bold;
 }
 
 .reveal a:not(.image):hover
 {
-	color: #ddd;
-	text-decoration: none;
+	color: #ccc;
 }
 
 .reveal p
@@ -138,6 +163,7 @@ body
 {
 	font-size: 0.75em;
 	font-family: 'Bitstream Vera Sans Mono', monospace;
+	line-height: 1.5em;
 }
 
 /*********************************************
@@ -186,6 +212,7 @@ input.invalid
 {
 	margin-left: auto;
 	margin-right: auto;
+	text-align: left;
 }
 
 .reveal table td
