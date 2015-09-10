@@ -142,30 +142,30 @@ class Sword : public Movable
 				<section data-background="#158">
 					<h1>Classic game code</h1>
 					<p>
-						Doom 3 source - <a href="https://github.com/id-Software/DOOM-3-BFG">https://github.com/id-Software/DOOM-3-BFG</a>
+						Doom 3 source - <a href="https://github.com/id-Software/DOOM-3-BFG">github.com/id-Software/DOOM-3-BFG</a>
 					</p>
-					<ul>
+					<ul class="blank">
 						<li>idClass
-						<ul>
+						<ul class="blank">
 							<li>idEntity
-							<ul>
+							<ul class="blank">
 								<li>idAnimatedEntity
-								<ul>
+								<ul class="blank">
 									<li>idWeapon</li>
 									<li>idAFEntity_Base
-									<ul>
+									<ul class="blank">
 										<li>idAFEntity_ClawFourFingers</li>
 										<li>idAFEntity_Vehicle
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_VehicleFourWheels</li>
 											<li>idAFEntity_VehicleSixWheels</li>
 										</ul>
 										</li>
 										<li>idAFEntity_Gibbable
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_WithAttachedHead</li>
 											<li>idActor
-											<ul>
+											<ul class="blank">
 												<li>idPlayer</li>
 												<li>idAI</li>
 											</ul>
@@ -186,26 +186,26 @@ class Sword : public Movable
 					<p>"The player is now a car"</p>
 					<ul class="fragment">
 						<li>idClass
-						<ul>
+						<ul class="blank">
 							<li>idEntity
-							<ul>
+							<ul class="blank">
 								<li>idAnimatedEntity
-								<ul>
+								<ul class="blank">
 									<li>idWeapon</li>
 									<li>idAFEntity_Base
-									<ul>
+									<ul class="blank">
 										<li>idAFEntity_ClawFourFingers</li>
 										<li>idAFEntity_Vehicle
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_VehicleFourWheels &lt;------------</li>
 											<li>idAFEntity_VehicleSixWheels</li>
 										</ul>
 										</li>
 										<li>idAFEntity_Gibbable
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_WithAttachedHead</li>
 											<li>idActor
-											<ul>
+											<ul class="blank">
 												<li>idPlayer &lt;------------</li>
 												<li>idAI</li>
 											</ul>
@@ -227,26 +227,26 @@ class Sword : public Movable
 					<p>"Some code needs to go in both VehicleFourWheels and idPlayer"</p>
 					<ul class="fragment">
 						<li>idClass
-						<ul>
+						<ul class="blank">
 							<li>idEntity
-							<ul>
+							<ul class="blank">
 								<li>idAnimatedEntity
-								<ul>
+								<ul class="blank">
 									<li>idWeapon</li>
 									<li>idAFEntity_Base <span class="fragment">&lt;------------------ right here. perfect.</span>
-									<ul>
+									<ul class="blank">
 										<li>idAFEntity_ClawFourFingers</li>
 										<li>idAFEntity_Vehicle
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_VehicleFourWheels &lt;------------</li>
 											<li>idAFEntity_VehicleSixWheels</li>
 										</ul>
 										</li>
 										<li>idAFEntity_Gibbable
-										<ul>
+										<ul class="blank">
 											<li>idAFEntity_WithAttachedHead</li>
 											<li>idActor
-											<ul>
+											<ul class="blank">
 												<li>idPlayer &lt;------------</li>
 												<li>idAI</li>
 											</ul>
@@ -699,9 +699,9 @@ private:
 				</section>
 				<section data-background="#101a26">
 					<h1>Revised structure</h1>
-					<ul>
+					<ul class="blank">
 						<li>idPlayer
-						<ul>
+						<ul class="blank">
 							<li>idTransform</li>
 							<li>idHealth</li>
 							<li>idAnimatedModel</li>
@@ -713,11 +713,11 @@ private:
 						</li>
 
 						<li>idAFEntity_VehicleFourWheels
-						<ul>
-							<li>idTransform
-							<li>idAnimatedModel
-							<li>idRigidBody
-							<li>idFourWheelController
+						<ul class="blank">
+							<li>idTransform</li>
+							<li>idAnimatedModel</li>
+							<li>idRigidBody</li>
+							<li>idFourWheelController</li>
 						</ul>
 						</li>
 
@@ -763,7 +763,7 @@ double b(int x)
 					</table>
 					<small>
 						<a href="http://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html">
-							http://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html
+							intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html
 						</a>
 					</small>
 				</section>
@@ -790,33 +790,139 @@ double b(int x)
 					<h1>RAM</h1>
 				</section>
 				<section data-background="#158">
-					<h1>Back to Doom</h1>
-					<p>Task: find all objects near a point</p>
+					<h1>Doom 3 Performance</h1>
+					<p>Let's look at Doom 3's update loop</p>
 				</section>
 				<section data-background="#101a26">
-					<h1>Something like this</h1>
 					<pre><code class="cpp">
-for
-(
-	idEntity* ent = activeEntities.Next();
+for ( idEntity* ent = activeEntities.Next();
 	ent != NULL;
-	ent = ent-&gt;activeNode.Next()
-)
+	ent = ent-&gt;activeNode.Next() )
 {
-	idVec3 diff = ent-&gt;GetPhysics()-&gt;GetOrigin() - pos;
-	if (diff.Length() &lt; radius)
-		result.Append(ent);
+	if ( g_cinematic.GetBool() && inCinematic && !ent-&gt;cinematic )
+	{
+		ent-&gt;GetPhysics()-&gt;UpdateTime( time );
+		continue;
+	}
+	timer_singlethink.Clear();
+	timer_singlethink.Start();
+	RunEntityThink( *ent, cmdMgr );
+	timer_singlethink.Stop();
+	ms = timer_singlethink.Milliseconds();
+	if ( ms &gt;= g_timeentities.GetFloat() )
+		Printf( "%d: entity '%s': %.1f ms\n", time, ent-&gt;name.c_str(), ms );
+	num++;
 }
 					</code></pre>
+					<p>Looks pretty clean and generic</p>
+				</section>
+				<section data-background="#822">
+					<h1>Questions</h1>
+					<p>What is executing?</p>
+					<p>In what order is it executing?</p>
+					<p>Where is the data?</p>
+					<p>How can we parallelize this?</p>
+					<img src="img/shrug.gif" class="fragment" />
 				</section>
 				<section data-background="#101a26">
-					<h1>Thank you!</h1>
-					<h3>Questions?</h3>
-					<small>
-						Evan Todd<br />
-						<a href="http://etodd.io">etodd.io</a><br />
-						<a href="http://twitter.com/etodd_">@etodd_</a>
-					</small>
+					<h1>Look closely - it's a linked list</h1>
+					<pre><code class="cpp">
+for ( idEntity* ent = activeEntities.Next();
+	ent != NULL;
+	ent = ent-&gt;activeNode.Next() )
+					</code></pre>
+					<div class="fragment">
+						<img src="img/linked-list.svg" />
+						<p>Cache = 😥</p>
+					</div>
+				</section>
+				<section data-background="#101a26">
+					<h1>Compare to this</h1>
+					<pre><code class="cpp">
+for (int i = 0; i &lt; rigid_bodies.length; i++)
+	rigid_bodies[i].update();
+
+for (int i = 0; i &lt; ai_controllers.length; i++)
+	ai_controllers[i].update();
+
+for (int i = 0; i &lt; animated_models.length; i++)
+	animated_models[i].update();
+
+// ...
+					</code></pre>
+					<div class="fragment">
+						<img src="img/components.svg" />
+						<p>Cache = 😃</p>
+					</div>
+				</section>
+				<section data-background="#822">
+					<h1>Trick #4</h1>
+					<p>Line up data in memory for huge performance gains</p>
+					<img src="img/gainz.png" />
+				</section>
+				<section data-background="#158">
+					<h1>The One Weird Trick</h1>
+					<p class="fragment">Data first, not code first</p>
+				</section>
+				<section data-background="#822">
+					<h1>Why are globals evil?</h1>
+					<p>(trick #1)</p>
+					<p class="fragment">Data is not organized correctly</p>
+				</section>
+				<section data-background="#822">
+					<h1>Why is object-oriented better than globals?</h1>
+					<p>(trick #2)</p>
+					<p class="fragment">It helps you organize your data</p>
+				</section>
+				<section data-background="#822">
+					<h1>Why is composition even better?</h1>
+					<p>(trick #3)</p>
+					<p class="fragment">It helps you organize your data better</p>
+				</section>
+				<section data-background="#822">
+					<h1>Why does my code run faster when I line up data in memory?</h1>
+					<p>(trick #4)</p>
+					<p class="fragment">Your CPU likes it when you organize your data better</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>Object-oriented design</h1>
+					<div class="img">
+						<img class="absolute" src="img/uml.svg" />
+						<img class="fragment absolute" src="img/uml-encapsulation.svg" />
+						<img class="fragment absolute" src="img/uml-encapsulation2.svg" />
+					</div>
+				</section>
+				<section data-background="#822">
+					<img src="img/throne-of-lies.jpg" />
+				</section>
+				<section data-background="#101a26">
+					<h1>The truth: this is every program ever</h1>
+					<div class="img">
+						<img class="absolute" src="img/data-flow.svg" />
+						<img class="fragment absolute" src="img/data-flow-encapsulation.svg" />
+					</div>
+				</section>
+				<section data-background="#101a26">
+					<h1>Questions?</h1>
+					<p class="left">
+						<small>
+							Evan Todd<br />
+							<a href="http://etodd.io">etodd.io</a><br />
+							<a href="http://twitter.com/etodd_">@etodd_</a>
+						</small>
+					</p>
+					<ul>
+						<li><a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a></li>
+						<li><a href="https://www.youtube.com/watch?v=rX0ItVEVjHc">Mike Acton - Data-Oriented Design</a></li>
+						<li><a href="http://number-none.com/blow/john_carmack_on_inlined_code.html">John Carmack - Inlined Code</a></li>
+						<li><a href="http://mollyrocket.com/casey/stream_0019.html">Casey Muratori - Semantic Compression</a></li>
+					</ul>
+				</section>
+				<section data-background="#158">
+					<h1>Last-minute decision making - YAGNI</h1>
+				</section>
+				<section data-background="#822">
+					<h1>Semantic compression</h1>
 				</section>
 			</div>
 		</div>

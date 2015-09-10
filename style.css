@@ -166,12 +166,28 @@ body
 	line-height: 1.5em;
 }
 
+.img
+{
+	position: relative;
+	width: 1000px;
+	height: 700px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.absolute
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+}
+
 /*********************************************
  * PROGRESS BAR
  *********************************************/
 .reveal .progress span
 {
-	background: #8df;
+	background: #fff;
 	-webkit-transition: width 250ms linear;
 	-moz-transition: width 250ms linear;
 	-ms-transition: width 250ms linear;
@@ -254,6 +270,10 @@ div#color-swatch
 {
 	text-align: left;
 	padding-left: 2em;
+}
+
+.reveal ul.blank
+{
 	list-style-type: none;
 }
 
@@ -267,6 +287,11 @@ div#color-swatch
 	tab-size: 4;
 	-moz-tab-size: 4;
 	-o-tab-size: 4;
+}
+
+.reveal .left
+{
+	text-align: left;
 }
 
 pre .hljs-keyword,
