@@ -31,7 +31,7 @@
 				</section>
 				<section data-background="#158">
 					<h1>In search of the One Weird Trick</h1>
-					<p>I'll talk about a lot of tricks</p>
+					<p>I'll talk about a lot of tricks...</p>
 					<p>But we're looking for the One Weird Trick to rule them all</p>
 				</section>
 				<section data-background="#101a26">
@@ -789,80 +789,15 @@ double b(int x)
 				<section id="ram" data-background="#822">
 					<h1>RAM</h1>
 				</section>
-				<section data-background="#158">
-					<h1>Doom 3 Performance</h1>
-					<p>Let's look at Doom 3's update loop</p>
-				</section>
-				<section data-background="#101a26">
-					<pre><code class="cpp">
-for ( idEntity* ent = activeEntities.Next();
-	ent != NULL;
-	ent = ent-&gt;activeNode.Next() )
-{
-	if ( g_cinematic.GetBool() && inCinematic && !ent-&gt;cinematic )
-	{
-		ent-&gt;GetPhysics()-&gt;UpdateTime( time );
-		continue;
-	}
-	timer_singlethink.Clear();
-	timer_singlethink.Start();
-	RunEntityThink( *ent, cmdMgr );
-	timer_singlethink.Stop();
-	ms = timer_singlethink.Milliseconds();
-	if ( ms &gt;= g_timeentities.GetFloat() )
-		Printf( "%d: entity '%s': %.1f ms\n", time, ent-&gt;name.c_str(), ms );
-	num++;
-}
-					</code></pre>
-					<p>Looks pretty clean and generic</p>
-				</section>
-				<section data-background="#185">
-					<h1>Questions</h1>
-					<p>What is executing?</p>
-					<p>In what order is it executing?</p>
-					<p>Where is the data?</p>
-					<p>How can we parallelize this?</p>
-					<img src="img/shrug.gif" class="fragment" />
-				</section>
-				<section data-background="#101a26">
-					<h1>Look closely - it's a linked list</h1>
-					<pre><code class="cpp">
-for ( idEntity* ent = activeEntities.Next();
-	ent != NULL;
-	ent = ent-&gt;activeNode.Next() )
-					</code></pre>
-					<div class="fragment">
-						<img src="img/linked-list.svg" />
-						<p>Cache = 😥</p>
-					</div>
-				</section>
-				<section data-background="#101a26">
-					<h1>Compare to this</h1>
-					<pre><code class="cpp">
-for (int i = 0; i &lt; rigid_bodies.length; i++)
-	rigid_bodies[i].update();
-
-for (int i = 0; i &lt; ai_controllers.length; i++)
-	ai_controllers[i].update();
-
-for (int i = 0; i &lt; animated_models.length; i++)
-	animated_models[i].update();
-
-// ...
-					</code></pre>
-					<div class="fragment">
-						<img src="img/components.svg" />
-						<p>Cache = 😃</p>
-					</div>
-				</section>
 				<section data-background="#185">
 					<h1>Trick #4</h1>
-					<p>Line up data in memory for huge performance gains</p>
+					<p>Think about cache for huge performance gains</p>
 					<img src="img/gainz.png" />
 				</section>
 				<section data-background="#158">
 					<h1>The One Weird Trick</h1>
 					<p class="fragment">Data first, not code first</p>
+					<p class="fragment">AKA Data-Oriented Design</p>
 				</section>
 				<section data-background="#822">
 					<h1>Why are globals evil?</h1>
@@ -884,8 +819,11 @@ for (int i = 0; i &lt; animated_models.length; i++)
 					<p>(trick #4)</p>
 					<p class="fragment">Your CPU likes it when you organize your data better</p>
 				</section>
+				<section data-background="#158">
+					<h1>Let's compare OOP and DOD</h1>
+				</section>
 				<section data-background="#101a26">
-					<h1>Object-oriented design</h1>
+					<h1>Object-oriented</h1>
 					<div class="img">
 						<img class="absolute" src="img/uml.svg" />
 						<img class="fragment absolute" src="img/uml-encapsulation.svg" />
@@ -896,11 +834,56 @@ for (int i = 0; i &lt; animated_models.length; i++)
 					<img src="img/throne-of-lies.jpg" />
 				</section>
 				<section data-background="#101a26">
-					<h1>The truth: this is every program ever</h1>
-					<div class="img">
-						<img class="absolute" src="img/data-flow.svg" />
-						<img class="fragment absolute" src="img/data-flow-encapsulation.svg" />
-					</div>
+					<h1>Truth: this is every program ever:</h1>
+					<p>Input -> Process -> Output</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>In practice</h1>
+					<pre><code class="csharp">
+class Person
+{
+	private Person spouse;
+	public void marry(Person p)
+	{
+		spouse = p;
+		spouse.spouse = this;
+	}
+}
+
+Person a, b;
+a.marry(b);
+b.marry(a); // is this any different?
+					</code></pre>
+				</section>
+				<section data-background="#822">
+					<h1>OOP creates imaginary problems</h1>
+					<p>Who is in charge of marriage? The husband? The bride? The church?</p>
+					<p>Ignore all that and focus on what the computer is actually doing:</p>
+					<p>Input -&gt; Process -&gt; Output</p>
+				</section>
+				<section data-background="#101a26">
+					<h1>Like so</h1>
+					<pre><code class="csharp">
+// data
+struct Person
+{
+	public Person spouse;
+};
+
+// procedure
+static void marry(Person a, Person b)
+{
+	a.spouse = b;
+	b.spouse = a;
+}
+					</code></pre>
+				</section>
+				<section data-background="#158">
+					<h1>Disclaimer</h1>
+					<ul>
+						<li>Objects are still useful</li>
+						<li>Hard and fast rules do not exist</li>
+					</ul>
 				</section>
 				<section data-background="#185">
 					<h1>Questions?</h1>
@@ -929,18 +912,15 @@ for (int i = 0; i &lt; animated_models.length; i++)
 					</ul>
 				</section>
 				<section data-background="#101a26">
-					<h1>Vim makes coding fun</h1>
+					<h1>Shameless plug: Vim</h1>
 					<p><a href="http://www.viemu.com/a-why-vi-vim.html">viemu.com/a-why-vi-vim.html</a></p>
 					<img src="img/vim.gif" />
 					<p><small>source: <a href="https://jaxbot.me/articles/why-i-use-vim">jaxbot.me/articles/why-i-use-vim</a></small></p>
 				</section>
-				<section data-background="#822">
-					<h1>Hacker News</h1>
-					<a href="https://news.ycombinator.com">news.ycombinator.com</a>
-				</section>
 				<section data-background="#185">
 					<h1>Thank you!</h1>
-					<a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a>
+					<p><a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a></p>
+					<p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">etodd.io/2015/09/28/one-weird-trick-better-code</a></p>
 				</section>
 			</div>
 		</div>
