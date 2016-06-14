@@ -797,7 +797,8 @@ double b(int x)
 				<section data-background="#158">
 					<h1>The One Weird Trick</h1>
 					<p class="fragment">Data first, not code first</p>
-					<p class="fragment">AKA Data-Oriented Design</p>
+					<p class="fragment">Design data structures first, then write code</p>
+					<p class="fragment">This is called Data-Oriented Design</p>
 				</section>
 				<section data-background="#822">
 					<h1>Why are globals evil?</h1>
@@ -817,7 +818,7 @@ double b(int x)
 				<section data-background="#822">
 					<h1>Why does my code run faster when I line up data in memory?</h1>
 					<p>(trick #4)</p>
-					<p class="fragment">Your CPU likes it when you organize your data better</p>
+					<p class="fragment">Even your CPU likes it when you organize your data better</p>
 				</section>
 				<section data-background="#158">
 					<h1>Let's compare OOP and DOD</h1>
@@ -837,46 +838,102 @@ double b(int x)
 					<h1>Truth: this is every program ever:</h1>
 					<p>Input -> Process -> Output</p>
 				</section>
+				<section data-background="#822">
+					<h1>"But OOP helps us better model the world!"</h1>
+				</section>
 				<section data-background="#101a26">
-					<h1>In practice</h1>
-					<pre><code class="csharp">
-class Person
-{
-	private Person spouse;
-	public void marry(Person p)
-	{
-		spouse = p;
-		spouse.spouse = this;
-	}
-}
-
-Person a, b;
-a.marry(b);
-b.marry(a); // is this any different?
-					</code></pre>
+					<div class="img">
+						<img class="absolute" src="img/types-behaviors1.svg" />
+						<img class="fragment absolute" src="img/types-behaviors2.svg" />
+						<img class="fragment absolute" src="img/types-behaviors3.svg" />
+					</div>
 				</section>
 				<section data-background="#822">
-					<h1>OOP creates imaginary problems</h1>
-					<p>Who is in charge of marriage? The husband? The bride? The church?</p>
-					<p>Ignore all that and focus on what the computer is actually doing:</p>
-					<p>Input -&gt; Process -&gt; Output</p>
+					<h1>Steve Yegge's Kingdom of Nouns</h1>
+					<ul>
+						<li>Service</li>
+						<li>Manager</li>
+						<li>Provider</li>
+						<li>Factory</li>
+					</ul>
+				</section>
+				<section data-background="#185">
+					<h1>Example: messaging system</h1>
+					<ul>
+						<li class="fragment">Should a Message object <em>send()</em> itself?</li>
+						<li class="fragment">Or should a Sender object <em>send()</em> it?</li>
+						<li class="fragment">Or should a Receiver object <em>receive()</em> it?</li>
+						<li class="fragment">Or should a Connection object <em>transmit()</em> it?</li>
+					</ul>
+					<p class="fragment">Made-up problems</p>
+				</section>
+                <section data-background="#158">
+					<h1>Example: Doom 3</h1>
+					<p>Let's look at Doom 3's update loop</p>
 				</section>
 				<section data-background="#101a26">
-					<h1>Like so</h1>
-					<pre><code class="csharp">
-// data
-struct Person
+					<pre><code class="cpp">
+for ( idEntity* ent = activeEntities.Next();
+       ent != NULL;
+       ent = ent-&gt;activeNode.Next() )
 {
-	public Person spouse;
-};
-
-// procedure
-static void marry(Person a, Person b)
-{
-	a.spouse = b;
-	b.spouse = a;
+       if ( g_cinematic.GetBool() && inCinematic && !ent-&gt;cinematic )
+       {
+               ent-&gt;GetPhysics()-&gt;UpdateTime( time );
+               continue;
+       }
+       timer_singlethink.Clear();
+       timer_singlethink.Start();
+       RunEntityThink( *ent, cmdMgr );
+       timer_singlethink.Stop();
+       ms = timer_singlethink.Milliseconds();
+       if ( ms &gt;= g_timeentities.GetFloat() )
+               Printf( "%d: entity '%s': %.1f ms\n", time, ent-&gt;name.c_str(), ms );
+       num++;
 }
 					</code></pre>
+					<p>Looks pretty clean and generic</p>
+				</section>
+				<section data-background="#185">
+					<h1>Questions</h1>
+					<ul>
+						<li>What is executing?</li>
+						<li>In what order is it executing?</li>
+						<li>Where is the data stored in memory?</li>
+						<li>How would you parallelize this?</li>
+					</ul>
+					<img src="img/shrug.gif" class="fragment" />
+				</section>
+				<section data-background="#101a26">
+					<h1>It's a linked list - anything goes</h1>
+					<pre><code class="cpp">
+for ( idEntity* ent = activeEntities.Next();
+       ent != NULL;
+       ent = ent-&gt;activeNode.Next() )
+					</code></pre>
+					<div class="fragment">
+						<p>Cache = sad</p>
+					</div>
+				</section>
+				<section data-background="#101a26">
+					<h1>Compare to this</h1>
+					<pre><code class="cpp">
+for (int i = 0; i &lt; rigid_bodies.length; i++)
+       rigid_bodies[i].update();
+
+for (int i = 0; i &lt; ai_controllers.length; i++)
+       ai_controllers[i].update();
+
+// etc...
+					</code></pre>
+					<div class="fragment">
+						<ul>
+							<li>What is executing?</li>
+							<li>In what order is it executing?</li>
+							<li>Where is the data?</li>
+							<li>How would you parallelize this?</li>
+						</ul>
+					</div>
 				</section>
 				<section data-background="#158">
 					<h1>Disclaimer</h1>
@@ -895,15 +952,15 @@ static void marry(Person a, Person b)
 					</p>
 				</section>
 				<section data-background="#158">
-					<h1>Learn from the best</h1>
+					<h1>Learn from people smarter than me</h1>
 					<ul>
 						<li>
 							Mike Acton - Data-Oriented Design<br />
 							<a href="https://www.youtube.com/watch?v=rX0ItVEVjHc">youtube.com/watch?v=rX0ItVEVjHc</a>
 						</li>
 						<li>
-							John Carmack - Inlined Code<br />
-							<a href="http://number-none.com/blow/john_carmack_on_inlined_code.html">number-none.com/blow/john_carmack_on_inlined_code.html</a>
+							Brian Will - Object-Oriented Programming is Bad<br />
+							<a href="https://www.youtube.com/watch?v=QM1iUe6IofM">youtube.com/watch?v=QM1iUe6IofM</a>
 						</li>
 						<li>
 							Casey Muratori - Semantic Compression<br />
