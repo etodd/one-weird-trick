@@ -33,6 +33,13 @@
 					<h1>In search of the One Weird Trick</h1>
 					<p>I'll talk about a lot of tricks...</p>
 					<p>But we're looking for the One Weird Trick to rule them all</p>
+					<aside class="notes">
+						<ul>
+							<li>So powerful that it extends beyond programming</li>
+							<li>Actually saved my parents marriage</li>
+							<li>Just kidding, they're still divorced</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>Start at the beginning</h1>
@@ -99,7 +106,10 @@ var prevnum = 0;
 				</section>
 				<section data-background="#185">
 					<h1>Trick #1</h1>
-					<p>Globals are evil</p>
+					<p>Don't use globals</p>
+					<aside class="notes">
+						<p>Spaghetti code</p>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>Trick #2: object-oriented to the rescue!</h1>
@@ -184,7 +194,7 @@ class Sword : public Movable
 				<section data-background="#822">
 					<h1>Problem</h1>
 					<p>"The player is now a car"</p>
-					<ul class="fragment">
+					<ul>
 						<li>idClass
 						<ul class="blank">
 							<li>idEntity
@@ -197,7 +207,7 @@ class Sword : public Movable
 										<li>idAFEntity_ClawFourFingers</li>
 										<li>idAFEntity_Vehicle
 										<ul class="blank">
-											<li>idAFEntity_VehicleFourWheels &lt;------------</li>
+											<li>idAFEntity_VehicleFourWheels <span class="fragment">&lt;------------</span></li>
 											<li>idAFEntity_VehicleSixWheels</li>
 										</ul>
 										</li>
@@ -206,7 +216,7 @@ class Sword : public Movable
 											<li>idAFEntity_WithAttachedHead</li>
 											<li>idActor
 											<ul class="blank">
-												<li>idPlayer &lt;------------</li>
+												<li>idPlayer <span class="fragment">&lt;------------</span></li>
 												<li>idAI</li>
 											</ul>
 										</ul>
@@ -220,7 +230,9 @@ class Sword : public Movable
 						</ul>
 						</li>
 					</ul>
-					<p class="fragment">#$%@</p>
+					<aside class="notes">
+						<p>"Easy, make the player <em>control</em> the car instead of <em>being</em> the car."</p>
+					</aside>
 				</section>
 				<section data-background="#622">
 					<h1>More subtle but dangerous problem</h1>
@@ -696,6 +708,9 @@ private:
 				<section data-background="#158">
 					<h1>Unity to the rescue</h1>
 					<img src="img/unity.jpg" />
+					<aside class="notes">
+						<p>Just check off the list which components you want</p>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>Revised structure</h1>
@@ -729,8 +744,8 @@ private:
 					<p>In general, favor composition over inheritance</p>
 				</section>
 				<section data-background="#822">
-					<h3>Why are globals evil (trick #1)?<br />Why is OOP better (trick #2)?<br />Why is composition even better (trick #3)?</h3>
-					<p>You won't believe what happens next...</p>
+					<h3>Why do we avoid globals (trick #1)?<br />Why is OOP better (trick #2)?<br />Why is composition even better (trick #3)?</h3>
+					<p class="fragment">You won't believe what happens next...</p>
 				</section>
 				<section data-background="#158">
 					<h1>Let's talk about performance</h1>
@@ -797,23 +812,22 @@ double b(int x)
 				<section data-background="#158">
 					<h1>The One Weird Trick</h1>
 					<p class="fragment">Data first, not code first</p>
-					<p class="fragment">Design data structures first, then write code</p>
-					<p class="fragment">This is called Data-Oriented Design</p>
+					<p class="fragment">Data-Oriented Design</p>
 				</section>
 				<section data-background="#822">
-					<h1>Why are globals evil?</h1>
+					<h1>Why should we avoid globals in certain cases?</h1>
 					<p>(trick #1)</p>
 					<p class="fragment">Data is not organized correctly</p>
 				</section>
 				<section data-background="#822">
-					<h1>Why is object-oriented better than globals?</h1>
+					<h1>Why does object-oriented programming help?</h1>
 					<p>(trick #2)</p>
 					<p class="fragment">It helps you organize your data</p>
 				</section>
 				<section data-background="#822">
-					<h1>Why is composition even better?</h1>
+					<h1>Why is composition even better than OOP?</h1>
 					<p>(trick #3)</p>
-					<p class="fragment">It helps you organize your data better</p>
+					<p class="fragment">It helps you organize even better!</p>
 				</section>
 				<section data-background="#822">
 					<h1>Why does my code run faster when I line up data in memory?</h1>
@@ -824,22 +838,44 @@ double b(int x)
 					<h1>Let's compare OOP and DOD</h1>
 				</section>
 				<section data-background="#101a26">
-					<h1>Object-oriented</h1>
-					<div class="img">
+					<h1>OOP encapsulation</h1>
+					<div class="fragment img">
 						<img class="absolute" src="img/uml.svg" />
 						<img class="fragment absolute" src="img/uml-encapsulation.svg" />
 						<img class="fragment absolute" src="img/uml-encapsulation2.svg" />
 					</div>
+					<aside class="notes">
+						<ul>
+							<li>Fields private, only accessible by functions.</li>
+							<li>Object guaranteed to work if you follow the contract.</li>
+							<li>Encapsulate data because that's the dangerous important part.</li>
+							<li>Theory: we could swap out data and it would still work.</li>
+							<li>Code/behavior/contract first, not data first.</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#822">
 					<img src="img/throne-of-lies.jpg" />
-				</section>
-				<section data-background="#101a26">
-					<h1>Truth: this is every program ever:</h1>
-					<p>Input -> Process -> Output</p>
+					<p>They're all interconnected</p>
+					<aside class="notes">
+						<ul>
+							<li>Worst example: getters/setters</li>
+							<li>Try changing the data representation, see what happens</li>
+							<li>Contract depends heavily on data.</li>
+							<li>In theory, you could pull out one object from a project and use it somewhere else.</li>
+							<li>In reality, the only real encapsulation is at the project/library level.</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#822">
 					<h1>"But OOP helps us better model the world!"</h1>
+					<aside class="notes">
+						<ul>
+							<li>"It's an abstraction to helps me organize and think about bits and bytes like real-world objects."</li>
+							<li>Not arguing that OOP is useless.</li>
+							<li>The abstraction often doesn't match the real world, but people use it anyway.</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<div class="img">
@@ -847,6 +883,13 @@ double b(int x)
 						<img class="fragment absolute" src="img/types-behaviors2.svg" />
 						<img class="fragment absolute" src="img/types-behaviors3.svg" />
 					</div>
+					<aside class="notes">
+						<ul>
+							<li>This abstraction can accomodate any program.</li>
+							<li>OOP shoehorns behaviors into types: Doom 3 vehicle / player example.</li>
+							<li>End up creating new, empty types purely to contain behaviors.</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#822">
 					<h1>Steve Yegge's Kingdom of Nouns</h1>
@@ -856,6 +899,9 @@ double b(int x)
 						<li>Provider</li>
 						<li>Factory</li>
 					</ul>
+					<aside class="notes">
+						<p>Impossible to fit everything into OOP paradigm, so we create these to make it fit.</p>
+					</aside>
 				</section>
 				<section data-background="#185">
 					<h1>Example: messaging system</h1>
@@ -864,12 +910,23 @@ double b(int x)
 						<li class="fragment">Or should a Sender object <em>send()</em> it?</li>
 						<li class="fragment">Or should a Receiver object <em>receive()</em> it?</li>
 						<li class="fragment">Or should a Connection object <em>transmit()</em> it?</li>
+						<li class="fragment">Do we need a ConnectionFactory?</li>
 					</ul>
 					<p class="fragment">Made-up problems</p>
+					<aside class="notes">
+						<ul>
+							<li>This is probably a UML diagram interview question</li>
+							<li>Not actually thinking about the real problem of sending messages, just thinking about how to shoehorn behaviors into types.</li>
+							<li>Unnecessary; keep behavior and data separate.</li>
+						</ul>
+					</aside>
 				</section>
                 <section data-background="#158">
 					<h1>Example: Doom 3</h1>
 					<p>Let's look at Doom 3's update loop</p>
+					<aside class="notes">
+						<p>What is an update loop?</p>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<pre><code class="cpp">
@@ -877,7 +934,7 @@ for ( idEntity* ent = activeEntities.Next();
        ent != NULL;
        ent = ent-&gt;activeNode.Next() )
 {
-       if ( g_cinematic.GetBool() && inCinematic && !ent-&gt;cinematic )
+       if ( g_cinematic.GetBool() &amp;&amp; inCinematic &amp;&amp; !ent-&gt;cinematic )
        {
                ent-&gt;GetPhysics()-&gt;UpdateTime( time );
                continue;
@@ -893,6 +950,14 @@ for ( idEntity* ent = activeEntities.Next();
 }
 					</code></pre>
 					<p>Looks pretty clean and generic</p>
+					<aside class="notes">
+						<ul>
+							<li>RunEntityThink probably calls a virtual function</li>
+							<li>Great OOP design</li>
+							<li>Can change entities without changing this loop</li>
+							<li>Could be update loop for almost any game</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#185">
 					<h1>Questions</h1>
@@ -903,17 +968,13 @@ for ( idEntity* ent = activeEntities.Next();
 						<li>How would you parallelize this?</li>
 					</ul>
 					<img src="img/shrug.gif" class="fragment" />
-				</section>
-				<section data-background="#101a26">
-					<h1>It's a linked list - anything goes</h1>
-					<pre><code class="cpp">
-for ( idEntity* ent = activeEntities.Next();
-       ent != NULL;
-       ent = ent-&gt;activeNode.Next() )
-					</code></pre>
-					<div class="fragment">
-						<p>Cache = sad</p>
-					</div>
+					<aside class="notes">
+						<ul>
+							<li>Linked list - different sized entities scattered on the heap</li>
+							<li>Cache is sad</li>
+							<li>Can't parallelize - not sure what entities depend on each other</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>Compare to this</h1>
@@ -934,22 +995,30 @@ for (int i = 0; i &lt; ai_controllers.length; i++)
 							<li>How would you parallelize this?</li>
 						</ul>
 					</div>
+					<aside class="notes">
+						<p>Not encapsulated in OOP sense - if we change entities, have to change this update loop</p>
+					</aside>
+				</section>
+				<section data-background="#185">
+					<h1>Takeaway</h1>
+					<ol>
+						<li class="fragment">Data first, not code first.</li>
+						<li class="fragment">Separate behavior and state.</li>
+						<li class="fragment">Don't instinctively reach for OOP for every problem.</li>
+					</ol>
 				</section>
 				<section data-background="#158">
-					<h1>Disclaimer</h1>
+					<h1>Disclaimers</h1>
 					<ul>
-						<li>Objects are still useful</li>
-						<li>Hard and fast rules do not exist</li>
+						<li>Objects are still useful.</li>
+						<li>Use the right tool for the right job.</li>
+						<li>Hard and fast rules do not exist.</li>
 					</ul>
 				</section>
 				<section data-background="#185">
-					<h1>Questions?</h1>
-					<p class="left">
-						Evan Todd<br />
-						<a href="http://etodd.io">etodd.io</a><br />
-						<a href="http://twitter.com/etodd_">@etodd_</a><br />
-						<a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a>
-					</p>
+					<h1>Thank you!</h1>
+					<p><a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a></p>
+					<p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">etodd.io/2015/09/28/one-weird-trick-better-code</a></p>
 				</section>
 				<section data-background="#158">
 					<h1>Learn from people smarter than me</h1>
@@ -967,17 +1036,6 @@ for (int i = 0; i &lt; ai_controllers.length; i++)
 							<a href="http://mollyrocket.com/casey/stream_0019.html">mollyrocket.com/casey/stream_0019.html</a>
 						</li>
 					</ul>
-				</section>
-				<section data-background="#101a26">
-					<h1>Shameless plug: Vim</h1>
-					<p><a href="http://www.viemu.com/a-why-vi-vim.html">viemu.com/a-why-vi-vim.html</a></p>
-					<img src="img/vim.gif" />
-					<p><small>source: <a href="https://jaxbot.me/articles/why-i-use-vim">jaxbot.me/articles/why-i-use-vim</a></small></p>
-				</section>
-				<section data-background="#185">
-					<h1>Thank you!</h1>
-					<p><a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a></p>
-					<p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">etodd.io/2015/09/28/one-weird-trick-better-code</a></p>
 				</section>
 			</div>
 		</div>
@@ -997,6 +1055,7 @@ for (int i = 0; i &lt; ai_controllers.length; i++)
 				dependencies:
 				[
 					{ src: 'reveal.js/plugin/highlight/highlight.js', async: false, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: false },
 				],
 			});
 

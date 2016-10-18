@@ -45,6 +45,12 @@ body
 	color: #fff;
 }
 
+.reveal ul, .reveal ol
+{
+	text-align: left;
+	padding-left: 2em;
+}
+
 ::selection
 {
 	background-color: #38a;
