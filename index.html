@@ -35,6 +35,7 @@
 					<p>But we're looking for the One Weird Trick to rule them all</p>
 					<aside class="notes">
 						<ul>
+							<li>I really like clickbait headlines</li>
 							<li>So powerful that it extends beyond programming</li>
 							<li>Actually saved my parents marriage</li>
 							<li>Just kidding, they're still divorced</li>
@@ -128,6 +129,9 @@ class Sword
 	int sharpness = 9000;
 }
 					</pre></code>
+					<aside class="notes">
+						<p>Can have multiple instances of objects</p>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>We can even do this</h1>
@@ -148,6 +152,9 @@ class Sword : public Movable
 	int sharpness = 9000;
 }
 					</code></pre>
+					<aside class="notes">
+						<p>Extract common code</p>
+					</aside>
 				</section>
 				<section data-background="#158">
 					<h1>Classic game code</h1>
@@ -190,6 +197,12 @@ class Sword : public Movable
 						</ul>
 						</li>
 					</ul>
+					<aside class="notes">
+						<ul>
+							<li>Actually a beautiful codebase</li>
+							<li>Classic OOP design</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#822">
 					<h1>Problem</h1>
@@ -231,7 +244,10 @@ class Sword : public Movable
 						</li>
 					</ul>
 					<aside class="notes">
-						<p>"Easy, make the player <em>control</em> the car instead of <em>being</em> the car."</p>
+						<ul>
+							<li>Assignment from John Carmack</li>
+							<li>"Easy, make the player <em>control</em> the car instead of <em>being</em> the car."</li>
+						</ul>
 					</aside>
 				</section>
 				<section data-background="#622">
@@ -273,10 +289,16 @@ class Sword : public Movable
 						</ul>
 						</li>
 					</ul>
+					<aside class="notes">
+						<ul>
+							<li>Example: network sync functionality</li>
+							<li>Too lazy to copy/paste</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#101a26">
 					<h1>The terrible, logical conclusion</h1>
-<pre><code data-trim class="cpp">
+						<pre><code data-trim class="cpp">
 class idEntity : public idClass {
 public:
 	static const int		MAX_PVS_AREAS = 4;
@@ -703,7 +725,10 @@ private:
 	void					Event_GetGuiParmFloat(int guiNum, const char *key);
 	void					Event_GuiNamedEvent(int guiNum, const char *event);
 };
-</code></pre>
+					</code></pre>
+					<aside class="notes">
+						<p>Point out health field toward top: // FIXME: do all objects really need health?</p>
+					</aside>
 				</section>
 				<section data-background="#158">
 					<h1>Unity to the rescue</h1>
@@ -738,14 +763,25 @@ private:
 
 						<li>...</li>
 					</ul>
+					<aside class="notes">
+						<p>Example: tack on a network sync component</p>
+					</aside>
 				</section>
 				<section data-background="#185">
 					<h1>Trick #3</h1>
 					<p>In general, favor composition over inheritance</p>
+					<aside class="notes">
+						<ul>
+							<li>One level of inheritance is okay</li>
+							<li>Next: quick review</li>
+						</ul>
+					</aside>
 				</section>
 				<section data-background="#822">
 					<h3>Why do we avoid globals (trick #1)?<br />Why is OOP better (trick #2)?<br />Why is composition even better (trick #3)?</h3>
-					<p class="fragment">You won't believe what happens next...</p>
+					<aside class="notes">
+						<p>Next: small detour before the big reveal</p>
+					</aside>
 				</section>
 				<section data-background="#158">
 					<h1>Let's talk about performance</h1>
@@ -774,7 +810,7 @@ double b(int x)
 					<h1>Instruction latency</h1>
 					<table>
 						<tr><td>sqrtps</td><td>14 cycles</td></tr>
-						<tr><td>mov</td><td>?</td></tr>
+						<tr><td>movq</td><td>?</td></tr>
 					</table>
 					<small>
 						<a href="http://www.intel.com/content/www/us/en/architecture-and-technology/64-ia-32-architectures-optimization-manual.html">
@@ -846,11 +882,12 @@ double b(int x)
 					</div>
 					<aside class="notes">
 						<ul>
-							<li>Fields private, only accessible by functions.</li>
-							<li>Object guaranteed to work if you follow the contract.</li>
+							<li>Fields private, only accessible by methods.</li>
 							<li>Encapsulate data because that's the dangerous important part.</li>
+							<li>Object guaranteed to work if you follow the contract.</li>
 							<li>Theory: we could swap out data and it would still work.</li>
-							<li>Code/behavior/contract first, not data first.</li>
+							<li>Could switch age from int to float.</li>
+							<li>Code/behavior/contract first, data is almost irrelevant.</li>
 						</ul>
 					</aside>
 				</section>
@@ -860,10 +897,19 @@ double b(int x)
 					<aside class="notes">
 						<ul>
 							<li>Worst example: getters/setters</li>
+							<li>Contract depends heavily on data. Age int/float example.</li>
 							<li>Try changing the data representation, see what happens</li>
-							<li>Contract depends heavily on data.</li>
 							<li>In theory, you could pull out one object from a project and use it somewhere else.</li>
-							<li>In reality, the only real encapsulation is at the project/library level.</li>
+							<li>In reality, encapsulation rarely works on the object level. More often at the system or library level.</li>
+						</ul>
+					</aside>
+				</section>
+				<section data-background="#158">
+					TODO: illustrate system-level or library-level encapsulation.
+					<aside class="notes">
+						<ul>
+							<li>Often want to encapsulate a system</li>
+							<li>Don't waste time writing contracts between objects when they're naturally linked.</li>
 						</ul>
 					</aside>
 				</section>
@@ -871,7 +917,7 @@ double b(int x)
 					<h1>"But OOP helps us better model the world!"</h1>
 					<aside class="notes">
 						<ul>
-							<li>"It's an abstraction to helps me organize and think about bits and bytes like real-world objects."</li>
+							<li>"Think about bits and bytes like real-world objects."</li>
 							<li>Not arguing that OOP is useless.</li>
 							<li>The abstraction often doesn't match the real world, but people use it anyway.</li>
 						</ul>
@@ -885,8 +931,10 @@ double b(int x)
 					</div>
 					<aside class="notes">
 						<ul>
+							<li>Types: could be a struct; different than an object</li>
 							<li>This abstraction can accomodate any program.</li>
-							<li>OOP shoehorns behaviors into types: Doom 3 vehicle / player example.</li>
+							<li>Shoehorns behavior into types: Doom 3 net sync example.</li>
+							<li>Some behaviors deal with multiple types; too bad</li>
 							<li>End up creating new, empty types purely to contain behaviors.</li>
 						</ul>
 					</aside>
@@ -900,32 +948,56 @@ double b(int x)
 						<li>Factory</li>
 					</ul>
 					<aside class="notes">
-						<p>Impossible to fit everything into OOP paradigm, so we create these to make it fit.</p>
+						<ul>
+							<li>Brian Will - Object-Oriented Programming is Bad</li>
+							<li>Impossible to fit everything into OOP paradigm, so we create these to make it fit.</li>
+						</ul>
 					</aside>
 				</section>
-				<section data-background="#185">
+				<section data-background="#822">
 					<h1>Example: messaging system</h1>
 					<ul>
 						<li class="fragment">Should a Message object <em>send()</em> itself?</li>
-						<li class="fragment">Or should a Sender object <em>send()</em> it?</li>
-						<li class="fragment">Or should a Receiver object <em>receive()</em> it?</li>
+						<li class="fragment">Or should a Endpoint object <em>send()</em> it?</li>
 						<li class="fragment">Or should a Connection object <em>transmit()</em> it?</li>
 						<li class="fragment">Do we need a ConnectionFactory?</li>
 					</ul>
 					<p class="fragment">Made-up problems</p>
 					<aside class="notes">
 						<ul>
-							<li>This is probably a UML diagram interview question</li>
+							<li>Scenario: interview question</li>
 							<li>Not actually thinking about the real problem of sending messages, just thinking about how to shoehorn behaviors into types.</li>
 							<li>Unnecessary; keep behavior and data separate.</li>
+							<li>You SHOULD fail this interview</li>
 						</ul>
 					</aside>
 				</section>
-                <section data-background="#158">
-					<h1>Example: Doom 3</h1>
-					<p>Let's look at Doom 3's update loop</p>
+				<section data-background="#158">
+					<h1>What you should be asking</h1>
+					<ul>
+						<li>How large are the messages?</li>
+						<li>How often are we sending them?</li>
+					</ul>
 					<aside class="notes">
-						<p>What is an update loop?</p>
+						<ul>
+							<li>Interviewers want to know what questions you ask</li>
+							<li>Bandwidth?</li>
+							<li>How am I sending these? In-game? IPC? Network? Smoke signals?</li>
+							<li>Latency?</li>
+							<li>Queueing/storing?</li>
+							<li>Reliability?</li>
+							<li>Error handling?</li>
+						</ul>
+					</aside>
+				</section>
+                <section data-background="#185">
+					<h1>Example: Doom 3</h1>
+					<p>Let's look at Doom 3's update function</p>
+					<aside class="notes">
+						<ul>
+							<li>What is an update function?</li>
+							<li>Executes at 60 FPS, or 30 FPS in a bad game</li>
+						</ul>
 					</aside>
 				</section>
 				<section data-background="#101a26">
@@ -955,6 +1027,7 @@ for ( idEntity* ent = activeEntities.Next();
 							<li>RunEntityThink probably calls a virtual function</li>
 							<li>Great OOP design</li>
 							<li>Can change entities without changing this loop</li>
+							<li>Complexity encapsulated inside entities</li>
 							<li>Could be update loop for almost any game</li>
 						</ul>
 					</aside>
@@ -970,8 +1043,9 @@ for ( idEntity* ent = activeEntities.Next();
 					<img src="img/shrug.gif" class="fragment" />
 					<aside class="notes">
 						<ul>
+							<li>Bad execution order leads to jitter</li>
 							<li>Linked list - different sized entities scattered on the heap</li>
-							<li>Cache is sad</li>
+							<li>Cache is sad - example of single-byte-sized entity</li>
 							<li>Can't parallelize - not sure what entities depend on each other</li>
 						</ul>
 					</aside>
@@ -996,7 +1070,10 @@ for (int i = 0; i &lt; ai_controllers.length; i++)
 						</ul>
 					</div>
 					<aside class="notes">
-						<p>Not encapsulated in OOP sense - if we change entities, have to change this update loop</p>
+						<ul>
+							<li>Not encapsulated in OOP sense - if we change entities, have to change this update loop</li>
+							<li>Cache - single-byte-sized component</li>
+						</ul>
 					</aside>
 				</section>
 				<section data-background="#185">
@@ -1017,12 +1094,15 @@ for (int i = 0; i &lt; ai_controllers.length; i++)
 				</section>
 				<section data-background="#185">
 					<h1>Thank you!</h1>
-					<p><a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a></p>
-					<p><a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">etodd.io/2015/09/28/one-weird-trick-better-code</a></p>
-				</section>
-				<section data-background="#158">
-					<h1>Learn from people smarter than me</h1>
 					<ul>
+						<li>
+							Slides<br />
+							<a href="https://etodd.github.io/one-weird-trick">etodd.github.io/one-weird-trick</a>
+						</li>
+						<li>
+							Article<br />
+							<a href="http://etodd.io/2015/09/28/one-weird-trick-better-code/">etodd.io/2015/09/28/one-weird-trick-better-code</a>
+						</li>
 						<li>
 							Mike Acton - Data-Oriented Design<br />
 							<a href="https://www.youtube.com/watch?v=rX0ItVEVjHc">youtube.com/watch?v=rX0ItVEVjHc</a>
